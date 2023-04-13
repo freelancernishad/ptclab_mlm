@@ -143,6 +143,9 @@ Route::middleware('admin')->group(function () {
     //refer
     Route::controller('ReferralController')->name('referrals.')->prefix('referrals')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/designation', 'designation')->name('designation');
+        Route::post('/designation', 'Updatedesignation')->name('Updatedesignation');
+        Route::get('/designation/user/{id}', 'designationUser')->name('designationUser');
         Route::post('/', 'update')->name('update');
         Route::get('status/{id}', 'status')->name('status');
     });

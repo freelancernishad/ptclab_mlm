@@ -16,6 +16,12 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+     protected $fillable = [
+        'ReferCount',
+        'Referlevel',
+     ];
+
     protected $hidden = [
         'password', 'remember_token','ver_code'
     ];
@@ -140,4 +146,20 @@ class User extends Authenticatable
         return $this->where('balance','>', 0);
     }
 
+
+
+    public function getLevel()
+    {
+        $parent = $this->parent;
+        $level = 0;
+        while ($parent) {
+            $level++;
+            $parent = $parent->parent;
+        }
+        return $level;
+    }
+
+
+
 }
+

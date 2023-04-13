@@ -569,5 +569,47 @@ function gs()
 }
 
 
+function CountUserTree($node) {
+    $children = User::where('ref_by', $node->id)->get();
+    $tree = [
+       'id'=> $node->id,
+       'children' => []
+    ];
+    foreach ($children as $child) {
+       $tree['children'][] = buildTree($child);
+    }
 
+    return $tree;
+}
+
+
+
+
+
+
+
+
+function assignLevelToUser($userId, &$levels, $level) {
+    $levels[$level]++;
+    $children = User::where('ref_by', $userId)->pluck('id');
+    foreach ($children as $child) {
+
+        assignLevelToUser($child, $levels, $level + 1);
+    }
+}
+
+ function countUsers($users,$totalLevel=3,$target=0)
+{
+    $levels = array_fill(0, $totalLevel, 0); // initialize with maximum 10 levels
+    assignLevelToUser($users->id, $levels, 0);
+
+    // display user count for each level
+    for ($i = 0; $i < count($levels); $i++) {
+        if($target===$i){
+
+            return $levels[$i];
+            // echo "Number of users in level " . ($i + 1) . ": " . $levels[$i] . "<br>";
+        }
+    }
+}
 

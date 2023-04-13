@@ -14,12 +14,21 @@
                     </a>
                 </li>
 
-                <li class="sidebar-menu-item {{ menuActive('admin.referrals.*') }}">
+                <li class="sidebar-menu-item {{ menuActive('admin.referrals.index') }}">
                     <a href="{{ route('admin.referrals.index') }}" class="nav-link ">
                         <i class="menu-icon las la-link"></i>
                         <span class="menu-title">@lang('Referral Commissions')</span>
                     </a>
                 </li>
+
+
+                <li class="sidebar-menu-item {{ menuActive('admin.referrals.designation') }}">
+                    <a href="{{ route('admin.referrals.designation') }}" class="nav-link ">
+                        <i class="menu-icon las la-link"></i>
+                        <span class="menu-title">@lang('Referral Designation')</span>
+                    </a>
+                </li>
+
 
                 <li class="sidebar-menu-item {{ menuActive('admin.plan.*') }}">
                     <a href="{{ route('admin.plan.index') }}" class="nav-link">
