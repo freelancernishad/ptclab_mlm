@@ -554,7 +554,8 @@ function gs()
 
  function buildTree($node)
 {
-    $children = User::where('ref_by', $node->id)->get();
+    // $children = User::where('ref_by', $node->id)->get();
+    $children = User::where('ref_by', $node->id)->where('plan_id','>',0)->get();
     $tree = [
         'id'=> $node->id,
         'name'=> $node->firstname,
@@ -591,7 +592,8 @@ function CountUserTree($node) {
 
 function assignLevelToUser($userId, &$levels, $level) {
     $levels[$level]++;
-    $children = User::where('ref_by', $userId)->pluck('id');
+    $children = User::where('ref_by', $userId)->where('plan_id','>',0)->pluck('id');
+    // $children = User::where('ref_by', $userId)->pluck('id');
     foreach ($children as $child) {
 
         assignLevelToUser($child, $levels, $level + 1);

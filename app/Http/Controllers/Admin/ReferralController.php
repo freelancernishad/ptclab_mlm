@@ -30,24 +30,41 @@ class ReferralController extends Controller
     {
         $pageTitle = 'Referral Designation';
         $designations = Designation::get();
+        $designationsFirst = Designation::first();
 
         $designationArray = [];
         $i = 1;
+        $old_value = $designationsFirst->needUser;
         foreach ($designations as $value) {
             $totaluser = 0;
             $totalusers = [];
             $usersCount = User::select(['id','ref_by'])->count();
             $users = User::select(['id','ref_by'])->get();
             $ii = 1;
+
             foreach ($users as $user) {
                 if(countUsers($user,$usersCount,$i)>=$value->needUser){
-                    $user->update(['ReferCount'=>countUsers($user,$usersCount,$i),'Referlevel'=>$value->id]);
-                    $totaluser += 1;
-                    array_push($totalusers,countUsers($user,$usersCount,$i));
+                    if($i>1){
+                        if(countUsers($user,$usersCount,$i-1)>=$old_value){
+
+                            $user->update(['ReferCount'=>countUsers($user,$usersCount,$i),'Referlevel'=>$value->id]);
+                        }else{
+                        }
+                    }else{
+                        $user->update(['ReferCount'=>countUsers($user,$usersCount,$i),'Referlevel'=>$value->id]);
+                    }
+
+
+
+
+
+                    // $totaluser += 1;
+                    // array_push($totalusers,countUsers($user,$usersCount,$i));
                 }
                 // echo $ii.'<br>';
                 $ii++;
             }
+            $old_value = $value->needUser;
 
             // array_push($designationArray,[
             //     'designation'=>$value->designation,
@@ -68,7 +85,8 @@ class ReferralController extends Controller
                     'id'=>$value->id,
                     'designation'=>$value->designation,
                     'needUser'=>$value->needUser,
-                    'totaluser'=> User::where('Referlevel',$value->id)->where('ReferCount', '>=', intval($value->needUser))->count(),
+                    'totaluser'=> User::where('Referlevel',$value->id)->where('ReferCount', '>=', intval($value->needUser))->where('plan_id','>',0)->count(),
+                    // 'totaluser'=> User::where('Referlevel',$value->id)->where('ReferCount', '>=', intval($value->needUser))->count(),
                 ]);
             }
 
