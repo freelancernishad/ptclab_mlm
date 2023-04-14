@@ -3,17 +3,14 @@
 <div class="row">
 
     <div class="col-md-6">
-        @php
-            $i = 0;
-        @endphp
-        <form action="/admin/referrals/designation" method="POST">
-            @csrf
+
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Level</th>
                         <th>Designation</th>
                         <th>User Requied</th>
-                        <th><button type="button" class="btn btn-info" onclick="addNew()">Add New</button></th>
+
                     </tr>
                 </thead>
                 <tbody id="addDesignation">
@@ -21,26 +18,53 @@
 
                     @foreach($designations as $designation)
 
-
-
-                    <tr id="row{{ $i }}">
-                        <td><input type="text" name="designation[]" value="{{ $designation->designation }}" class="form-control"></td>
-                        <td><input type="tel" name="needUser[]" value="{{ $designation->needUser }}"  class="form-control"></td>
-                        <td><button type="button" class="btn btn-danger btn_remove"  id="${i}">Remove</button></td>
+                    <tr>
+                        <td>Level-{{ $designation->id }}</td>
+                        <td>{{ $designation->designation }}</td>
+                        <td>{{ $designation->needUser }}</td>
                     </tr>
-
-                    @php
-                        $i++;
-                    @endphp
                     @endforeach
 
                 </tbody>
             </table>
-            <div class="text-center">
-                <input type="submit" value="Update" class="btn btn-info">
-            </div>
 
-        </form>
+
+
+
+            <div class="card-body">
+                <div class="form-group">
+                    <label>@lang('Number of Designation')</label>
+                    <div class="input-group">
+                        <input type="number" name="level" min="1" placeholder="Type a number & hit ENTER ↵" class="form-control">
+                        <button type="button" class="btn btn--primary generate">@lang('Generate')</button>
+                    </div>
+                    <span class="text--danger required-message d-none">@lang('Please enter a number')</span>
+                </div>
+
+                <form action="/admin/referrals/designation" method="POST">
+                    @csrf
+                        <h6 class="text--danger mb-3">@lang('The Old setting will be removed after generating new')</h6>
+                        <div class="form-group">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Level</th>
+                                        <th>Designation</th>
+                                        <th>User Requied</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="referralLevels">
+
+                                </tbody>
+                            </table>
+
+                            {{-- <div class="referralLevels"></div> --}}
+                        </div>
+                    <button type="submit" class="btn btn--primary h-45 w-100">@lang('Submit')</button>
+                </form>
+
+            </div>
     </div>
 
 
@@ -49,6 +73,7 @@
         <table class="table">
             <thead>
                 <tr>
+
                     <th>Designation</th>
                     <th>Total User</th>
                 </tr>
@@ -67,25 +92,6 @@
 
 </div>
 
-<script>
-		var i = <?php echo $i+1; ?>;
-
-        console.log(i)
-
- function addNew(){
-    $("#addDesignation").append(`
-           <tr id="row${i}">
-                    <td><input type="text" name="designation[]" class="form-control"></td>
-                    <td><input type="tel" name="needUser[]" class="form-control"></td>
-                    <td><button type="button" class="btn btn-danger btn_remove"  id="${i}">Remove</button></td>
-                </tr>
-                    `);
-                    i++;
-        }
-
-
-
-</script>
 
 
 @endsection
@@ -115,52 +121,42 @@
     </style>
 @endpush
 @push('script')
-    <script>
-
-
-
-
-$(document).ready(function(){
-            $(document).on('click','.btn_remove',function(){
-                var button_id = $(this).attr("id");
-                $("#row"+button_id+"").remove();
-            });
-        });
-
-
-
+<script>
     (function($){
         "use strict"
 
-
+        $('[name="level"]').on('focus', function(){
+            $(this).on('keyup', function(e){
+                if(e.which == 13){
+                    generrateLevels($(this));
+                }
+            });
+        });
 
         $(".generate").on('click', function () {
-            generrateLevels();
+            let $this = $(this).parents('.card-body').find('[name="level"]');
+            generrateLevels($this);
         });
 
         $(document).on('click', '.deleteBtn', function () {
-            $(this).closest('.input-group').remove();
+            $(this).closest('.inputRow').remove();
         });
 
-        function generrateLevels(){
-
-            let numberOfLevel = document.getElementById('designation').value;
-            console.log(numberOfLevel)
-
-            let parent = document.getElementById('addDesignation');
+        function generrateLevels($this){
+            let numberOfLevel = $this.val();
+            let parent = $this.parents('.card-body');
             let html = '';
             if (numberOfLevel && numberOfLevel > 0){
                 parent.find('.levelForm').removeClass('d-none');
                 parent.find('.required-message').addClass('d-none');
 
                 for (i = 1; i <= numberOfLevel; i++){
-                    html += `
-                    <div class="input-group mb-3">
-                        <span class="input-group-text justify-content-center">@lang('Level') ${i}</span>
-                        <input type="hidden" name="level[]" value="${i}" required>
-                        <input name="percent[]" class="form-control col-10" type="text" required placeholder="@lang('Commission Percentage')">
-                        <button class="btn btn--danger input-group-text deleteBtn" type="button"><i class=\'la la-times\'></i></button>
-                    </div>`
+                    html += `<tr class="inputRow">
+                        <td>Level-${i}</td>
+                        <td><input type="text" name="designation[]" class="form-control"></td>
+                        <td><input type="tel" name="needUser[]" class="form-control"></td>
+                        <td><button class="btn btn--danger input-group-text deleteBtn" type="button"><i class=\'la la-times\'></i></button></td>
+                    </tr>`
                 }
 
                 parent.find('.referralLevels').html(html);

@@ -68,7 +68,7 @@ class ReferralController extends Controller
                     'id'=>$value->id,
                     'designation'=>$value->designation,
                     'needUser'=>$value->needUser,
-                    'totaluser'=> User::where(['Referlevel'=>$value->id])->where('ReferCount', '>=', $value->needUser)->count(),
+                    'totaluser'=> User::where('Referlevel',$value->id)->where('ReferCount', '>=', intval($value->needUser))->count(),
                 ]);
             }
 
@@ -85,7 +85,7 @@ class ReferralController extends Controller
         $pageTitle = $designation->designation.' Users';
 
 
-        $users = User::where(['Referlevel'=>$designation->id])->where('ReferCount', '>=', $designation->needUser)->paginate(getPaginate());
+        $users = User::where(['Referlevel'=>$designation->id])->where('ReferCount', '>=', intval($designation->needUser))->paginate(getPaginate());
 
         return view('admin.referral_designationUser',compact('pageTitle','users'));
     }

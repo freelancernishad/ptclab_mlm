@@ -1,5 +1,12 @@
 @extends('admin.layouts.app')
 @section('panel')
+<style type="text/css">
+    span.tf-nc {
+        cursor: pointer;
+        width: 50px !important;
+        margin: 0 8px !important;
+    }
+</style>
     <div class="row justify-content-center">
         <div class="col-lg-12">
 
@@ -14,12 +21,7 @@
 
 @endsection
 @push('style')
-<style type="text/css">
-.tf-tree li {
-    padding: 0 !important;
-}
 
-</style>
 @endpush
 @push('script')
 <script type="text/javascript">
