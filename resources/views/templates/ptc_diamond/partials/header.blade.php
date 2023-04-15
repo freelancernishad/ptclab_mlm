@@ -1,6 +1,15 @@
 @php
 	$content = getContent('header.content', true);
 @endphp
+<style>
+
+@media only screen and (max-width: 600px) {
+    .login-btn__text{
+        display: none;
+    }
+}
+
+</style>
 <!-- Header Top -->
 <div class="header-top">
 	<div class="container">
@@ -45,13 +54,20 @@
                             </div>
                         </div>
                     </li>
-                    <li>
+                    <li style="display: flex;grid-gap: 5px;">
 						@guest
 							<a href="{{ route('user.login') }}" class="login-btn rounded-pill">
 								<span class="login-btn__icon">
 									<i class="las la-user"></i>
 								</span>
 								<span class="login-btn__text">@lang('Login')</span>
+							</a>
+
+							<a href="{{ route('user.register') }}" class="login-btn rounded-pill">
+								<span class="login-btn__icon">
+									<i class="las la-user-plus"></i>
+								</span>
+								<span class="login-btn__text">@lang('Signup')</span>
 							</a>
 						@else
 							<a href="{{ route('user.home') }}" class="login-btn rounded-pill">
