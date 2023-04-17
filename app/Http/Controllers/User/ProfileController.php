@@ -39,6 +39,20 @@ class ProfileController extends Controller
             'city' => $request->city,
         ];
 
+
+        if ($request->hasFile('image')) {
+
+            $old = $user->image;
+            if($old){
+                fileManager()->removeFile(getFilePath('userProfile') . '/' . $old);
+            }
+            $directory     = date("Y") . "/" . date("m") . "/" . date("d");
+            $path          = getFilePath('userProfile') . '/' . $directory;
+            $filename      = $directory . '/' . fileUploader($request->image, $path);
+            $user->image = $filename;
+        }
+
+
         $user->save();
         $notify[] = ['success', 'Profile updated successfully'];
         return back()->withNotify($notify);

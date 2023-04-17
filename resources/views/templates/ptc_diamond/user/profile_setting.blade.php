@@ -12,6 +12,20 @@
             <div class="card-body">
                 <form action="" method="post" enctype="multipart/form-data" class="row g-3">
                     @csrf
+
+                    <div class="form-group col-md-4 ">
+                        <label>@lang('Profile')</label>
+                        <input type="file" class="form-control"  name="image">
+                    </div>
+
+                       <div class="form-group col-md-4 ">
+
+                        <label>@lang('Current Profile') <span class="text-danger">*</span></label>
+                        <img src="{{ getImage(getFilePath('userProfile').'/'.$user->image) }}" class="w-100">
+
+                    </div>
+
+
                     <div class="col-md-6">
                         <label class="form-label" for="firstname">@lang('First Name')</label>
                         <input type="text" id="firstname" class="form-control form--control" name="firstname" value="{{$user->firstname}}" required>

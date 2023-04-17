@@ -2,7 +2,7 @@
 
       {{-- <span class="tf-nc" title="{{ $tree->username }}" onclick="viewUserDetials('{{ $tree->username }}','{{ $tree->name }}','{{ $tree->lastname }}')"> --}}
       <span class="tf-nc" title="{{ $tree->username }}" onclick="updateTree('{{ $tree->id }}')">
-        <img  src="https://www.w3schools.com/howto/img_avatar.png" alt="">
+        <img  src="{{ getImage(getFilePath('userProfile').'/'.$tree->image) }}" alt="">
         {{-- {{ $tree->username }} --}}
     </span>
       @if(count($tree->children) > 0)

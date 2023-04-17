@@ -200,15 +200,50 @@ class GeneralSettingController extends Controller
     public function adsSetting()
     {
         $pageTitle = 'Advertisements Setting';
-        return view('admin.setting.ads', compact('pageTitle'));
+        $ads_settings = gs()->ads_setting->adsData;
+        return view('admin.setting.ads', compact('pageTitle','ads_settings'));
     }
 
     public function adsSettingSubmit(Request $request)
     {
+          $requestedData =  $request->all();
+        $requestedDataCount = count($request->adsType);
+
+
+        $ad_price = [];
+        $amount_for_user = [];
+
+        $adsData = [];
+        for ($i=0; $i < $requestedDataCount; $i++) {
+
+
+
+            $ad_price[$request->adsType[$i]] =  $request->ad_price[$i];
+            $amount_for_user[$request->adsType[$i]] =  $request->amount_for_user[$i];
+
+            // print_r($request->adsType[$i]);
+            array_push($adsData,[
+                'adsName'=>$request->adsName[$i],
+                'adsType'=>$request->adsType[$i],
+                'ad_price'=>$request->ad_price[$i],
+                'amount_for_user'=>$request->amount_for_user[$i],
+                'uploaded'=>$request->uploaded[$i],
+                'IfOr'=>$request->IfOr[$i],
+            ]);
+        }
+
+        // return $adsData;
+        //  $ad_prices['ad_price'] = $ad_price;
+        //  $amount_for_users['amount_for_user'] = $amount_for_user;
+
+    //  return   $adsData = json_encode($adsData);
+
+
         $general = gs();
         $general->ads_setting = [
-            'ad_price' => $request->ad_price,
-            'amount_for_user' => $request->amount_for_user,
+            'ad_price' => $ad_price,
+            'amount_for_user' => $amount_for_user,
+            'adsData' => $adsData,
         ];
         $general->user_ads_post = $request->user_ads_post ? 1 : 0;
         $general->ad_auto_approve = $request->ad_auto_approve ? 1 : 0;
@@ -216,6 +251,23 @@ class GeneralSettingController extends Controller
 
         $notify[] = ['success', 'Ads setting updated successfully'];
         return back()->withNotify($notify);
+
+
+        // "ad_price": {
+        //     "script": "0.25",
+        //     "image": "0.25",
+        //     "url": "0.25"
+        //     },
+
+        //     "amount_for_user": {
+        //     "script": "0.15",
+        //     "image": "0.15",
+        //     "url": "0.15"
+        //     }
+
+
+
+
     }
 
 

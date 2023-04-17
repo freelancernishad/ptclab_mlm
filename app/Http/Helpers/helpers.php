@@ -560,6 +560,7 @@ function gs()
         'id'=> $node->id,
         'name'=> $node->firstname,
         'lastname'=> $node->lastname,
+        'image'=> $node->image,
        'username'=> $node->username,
        'children' => []
     ];

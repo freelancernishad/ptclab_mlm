@@ -1,5 +1,19 @@
 @extends('admin.layouts.app')
 @section('panel')
+
+<style>
+    .addmoreAds {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed black;
+    cursor: pointer;
+}
+</style>
+
 <div class="row mb-none-30">
     <div class="col-lg-12">
         <div class="card">
@@ -20,11 +34,37 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-3">
+                    <div class="row" id="parent">
+
+
+                        @foreach ($ads_settings as $ads_setting)
+
+
+
+
+                            <div class="col-md-3 adscolums">
+                                <x-ads-settings :adssetting="$ads_setting" />
+                            </div>
+                        @endforeach
+
+
+
+
+                            <div class="col-md-3 adscolums">
+                                <div class="addmoreAds" id="add-button">
+                                    Add More Ads
+                                </div>
+                            </div>
+
+
+
+
+                        {{-- <div class="col-md-3">
                             <div class="card mb-4">
                                 <div class="card-header bg--primary d-flex justify-content-between">
                                     <h5 class="text-white">@lang('Script Ads')</h5>
+                                    <input type="hidden" name="adsName[script]" value="script">
+                                    <input type="hidden" name="adsType[]" value="script">
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -44,10 +84,15 @@
                                 </div>
                             </div>
                         </div>
+
+
+
                         <div class="col-md-3">
                             <div class="card mb-4">
                                 <div class="card-header bg--primary d-flex justify-content-between">
                                     <h5 class="text-white">@lang('Image Ads')</h5>
+                                    <input type="hidden" name="adsName[image]" value="image">
+                                    <input type="hidden" name="adsType[]" value="image">
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -71,6 +116,8 @@
                             <div class="card mb-4">
                                 <div class="card-header bg--primary d-flex justify-content-between">
                                     <h5 class="text-white">@lang('URL Ads')</h5>
+                                    <input type="hidden" name="adsName[url]" value="url">
+                                    <input type="hidden" name="adsType[]" value="url">
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -96,6 +143,8 @@
                             <div class="card mb-4">
                                 <div class="card-header bg--primary d-flex justify-content-between">
                                     <h5 class="text-white">@lang('Youtube Video Ads')</h5>
+                                    <input type="hidden" name="adsName[youtube]" value="image">
+                                    <input type="hidden" name="adsType[]" value="image">
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -121,6 +170,8 @@
                             <div class="card mb-4">
                                 <div class="card-header bg--primary d-flex justify-content-between">
                                     <h5 class="text-white">@lang('Facebook Ads')</h5>
+                                    <input type="hidden" name="adsName[Facebook]" value="image">
+                                    <input type="hidden" name="adsType[]" value="image">
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -139,10 +190,23 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
 
                     </div>
+
+{{--
+                    <div id="parent">
+                        <div>Child 1</div>
+                        <div>Child 2</div>
+                        <div>Child 3</div>
+                        <button id="add-button">Add New Div</button>
+                      </div> --}}
+
+
+
+
+
                     <div class="card-footer">
                         <button type="submit" class="btn btn--primary w-100 h-45">@lang('Submit')</button>
                     </div>
@@ -165,5 +229,42 @@
             }
         }).change();
     })(jQuery);
+
+
+    const addButton = document.getElementById("add-button");
+const parent = document.getElementById("parent");
+
+addButton.addEventListener("click", () => {
+    const elements = document.getElementsByClassName("adscolums");
+const count = elements.length;
+console.log(count);
+
+  const newDiv = document.createElement("div");
+  newDiv.classList.add("col-md-3");
+  newDiv.classList.add("adscolums");
+  newDiv.innerHTML = `
+
+      @php
+        $defaltData = [
+          'adsName'=>'',
+          'adsType'=>'',
+          'uploaded'=>'',
+          'IfOr'=>'',
+          'ad_price'=>'',
+          'amount_for_user'=>''
+        ];
+        $defaltData = json_decode(json_encode($defaltData));
+      @endphp
+      <x-ads-settings :adssetting="$defaltData" />
+
+  `;
+
+  // Get the third child element
+  const child3 = parent.children[count-1];
+
+  // Insert the new div before the third child
+  parent.insertBefore(newDiv, child3);
+});
+
     </script>
 @endpush

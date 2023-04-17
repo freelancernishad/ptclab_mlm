@@ -13,7 +13,7 @@
 			<div class="col-lg-6 col-xxl-5">
 				<div class="login-form">
 					<h3 class="login-form__title">{{ __($content->data_values->heading) }}</h3>
-					<form action="{{ route('user.register') }}" class="row g-3 g-xxl-4 verify-gcaptcha" method="post">
+					<form action="{{ route('user.register') }}" class="row g-3 g-xxl-4 verify-gcaptcha" method="post" enctype="multipart/form-data">
                         @csrf
 						@if (session()->get('reference') != null)
                             <div class="col-12">
@@ -74,6 +74,11 @@
 							<input type="password" id="password_confirmation" name="password_confirmation" class="form-control form--control" placeholder="@lang('Re-type Password')" required>
 						</div>
 
+						<div class="col-md-12">
+							<label class="form-label" for="image">@lang('Profile Image')</label>
+							<input type="file" id="image" name="image" class="form-control form--control" placeholder="@lang('Profile Image')" required>
+						</div>
+
                         <x-captcha />
 
                         @if ($general->agree)
@@ -94,7 +99,7 @@
                             <button type="submit" class="btn btn--lg btn--base w-100 rounded">@lang('Register Now')</button>
                         </div>
 					</form>
-					
+
 					 @php
                             $credentials = $general->socialite_credentials;
                         @endphp

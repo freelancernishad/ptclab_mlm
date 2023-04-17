@@ -89,6 +89,19 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+
+
+        // ini_set ('display_errors', 1);
+        // ini_set ('display_startup_errors', 1);
+        // ini_set('memory_limit', '51200M');
+        // error_reporting (E_ALL);
+
+
+
+
+
+
+
         $this->validator($request->all())->validate();
 
         $request->session()->regenerateToken();
@@ -111,7 +124,9 @@ class RegisterController extends Controller
             return back()->withNotify($notify)->withInput();
         }
 
-        event(new Registered($user = $this->create($request->all())));
+        // return  $this->create($request,$request->all());
+
+        event(new Registered($user = $this->create($request,$request->all())));
 
         $this->guard()->login($user);
 
@@ -126,7 +141,7 @@ class RegisterController extends Controller
      * @param  array $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create($request,array $data)
     {
         $general = gs();
 
@@ -151,6 +166,20 @@ class RegisterController extends Controller
             'country' => isset($data['country']) ? $data['country'] : null,
             'city' => ''
         ];
+
+
+
+        if ($request->hasFile('image')) {
+            $directory     = date("Y") . "/" . date("m") . "/" . date("d");
+            $path          = getFilePath('userProfile') . '/' . $directory;
+            $filename      = $directory . '/' . fileUploader($request->image, $path);
+           $user->image = $filename;
+        }
+
+
+
+
+
         $user->kv = $general->kv ? Status::NO : Status::YES;
         $user->ev = $general->ev ? Status::NO : Status::YES;
         $user->sv = $general->sv ? Status::NO : Status::YES;

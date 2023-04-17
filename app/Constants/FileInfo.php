@@ -57,6 +57,10 @@ class FileInfo
             'path'      =>'assets/images/user/profile',
             'size'      =>'350x300',
         ];
+        $data['profiles'] = [
+            'path'      =>'assets/images/profiles',
+            'size'      =>'350x300',
+        ];
         $data['adminProfile'] = [
             'path'      =>'assets/admin/images/profile',
             'size'      =>'400x400',
