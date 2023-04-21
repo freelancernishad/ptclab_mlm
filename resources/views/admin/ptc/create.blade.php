@@ -43,33 +43,27 @@
                         </div>
                     </div>
 
+
+
                     <div class="row pt-5 mt-5 border-top">
                         <div class="form-group col-md-4">
-                            <label for="ads_type">@lang('Advertisement Type')</label>
-                            <select class="form-control" id="ads_type" name="ads_type" required>
-                                <option value="1" {{ old('ads_type')==1?'selected':'' }}>@lang('Link / URL')</option>
-                                <option value="2" {{ old('ads_type')==2?'selected':'' }}>@lang('Banner / Image')</option>
-                                <option value="3" {{ old('ads_type')==3?'selected':'' }}>@lang('Script / Code')</option>
-                                <option value="4" {{ old('ads_type')==4?'selected':'' }}>@lang('Youtube Embeded Link')</option>
+                        <label>Iframe/Original</label>
+                        <div class="input-group">
+                            <select name="IfrOr" id="IfrOr" class="form-control" required>
+                                <option value="">Select</option>
+                                <option>Iframe</option>
+                                <option>Original</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-8" id="websiteLink">
-                            <label>@lang('Link')</label>
-                            <input type="text" name="website_link" class="form-control" value="{{ old('website_link') }}" placeholder="@lang('http://example.com')">
-                        </div>
-                        <div class="form-group col-md-8" id="youtube">
-                            <label>@lang('Youtube Embeded Link')</label>
-                            <input type="text" name="youtube" class="form-control" value="{{ old('youtube') }}" placeholder="@lang('https://www.youtube.com/embed/your_code')">
-                        </div>
-                        <div class="form-group col-md-8 d-none" id="bannerImage">
-                            <label>@lang('Banner')</label>
-                            <input type="file" class="form-control"  name="banner_image">
-                        </div>
-                        <div class="form-group col-md-8 d-none" id="script">
-                            <label>@lang('Script')</label>
-                            <textarea  name="script" class="form-control">{{ old('script') }}</textarea>
-                        </div>
                     </div>
+                    </div>
+
+                    <div class="row pt-5 mt-5 border-top" id="TypeByFrom"></div>
+
+
+
+
+
                     <div class="form-group col-md-12 mt-3">
                         <button type="submit" class="btn btn--primary h-45 w-100">@lang('Submit')</button>
                     </div>
@@ -86,33 +80,52 @@
 
 
 @push('script')
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
+
+
+
+
+
+
+
+
     (function($){
         "use strict";
-        $('#ads_type').change(function(){
-            var adType = $(this).val();
-            if (adType == 1) {
-                $("#websiteLink").removeClass('d-none');
-                $("#bannerImage").addClass('d-none');
-                $("#script").addClass('d-none');
-                $("#youtube").addClass('d-none');
-            } else if (adType == 2) {
-                $("#bannerImage").removeClass('d-none');
-                $("#websiteLink").addClass('d-none');
-                $("#script").addClass('d-none');
-                $("#youtube").addClass('d-none');
-            } else if(adType == 3) {
-                $("#bannerImage").addClass('d-none');
-                $("#websiteLink").addClass('d-none');
-                $("#script").removeClass('d-none');
-                $("#youtube").addClass('d-none');
-            } else {
-                $("#bannerImage").addClass('d-none');
-                $("#websiteLink").addClass('d-none');
-                $("#script").addClass('d-none');
-                $("#youtube").removeClass('d-none');
+
+        $('#IfrOr').change(function(){
+            var IfrOr = $(this).val();
+            if (IfrOr == 'Iframe') {
+                ads_type('iframe');
+            }else if(IfrOr == 'Original'){
+                ads_type('original');
+            }else{
+
             }
-        }).change();
+        });
+
+
+
     })(jQuery);
+
+
+
+
+    function ads_type(type='Iframe',adType=1) {
+
+
+        const endpoint = `/api/ads/component?type=${type}&adtype=${adType}`;
+
+
+        $.get(endpoint, function(data) {
+            // console.log(data)
+            setTimeout(() => {
+
+                $('#TypeByFrom').html(data);
+            }, 1000);
+        });
+
+    }
+
 </script>
 @endpush

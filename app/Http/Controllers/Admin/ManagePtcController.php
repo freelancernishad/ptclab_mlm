@@ -58,7 +58,8 @@ class ManagePtcController extends Controller
     public function create(Request $request)
     {
         $pageTitle = 'Add Advertisement';
-        return view('admin.ptc.create', compact('pageTitle'));
+        $ads_settings = gs()->ads_setting->adsData;
+        return view('admin.ptc.create', compact('pageTitle','ads_settings'));
     }
 
     public function edit(Request $request, $id)
@@ -70,12 +71,15 @@ class ManagePtcController extends Controller
 
     public function store(Request $request)
     {
-        $this->validation($request, [
-            'website_link' => 'nullable|url|required_without_all:banner_image,script,youtube',
-            'banner_image' => 'nullable|mimes:jpeg,jpg,png,gif|required_without_all:website_link,script,youtube',
-            'script' => 'nullable|required_without_all:website_link,banner_image,youtube',
-            'youtube' => 'nullable|url|required_without_all:website_link,banner_image,script',
-        ]);
+        $IfrOr =  $request->IfrOr;
+        if($IfrOr=='iframe'){
+            $this->validation($request, [
+                'website_link' => 'nullable|url|required_without_all:banner_image,script,youtube',
+                'banner_image' => 'nullable|mimes:jpeg,jpg,png,gif|required_without_all:website_link,script,youtube',
+                'script' => 'nullable|required_without_all:website_link,banner_image,youtube',
+                'youtube' => 'nullable|url|required_without_all:website_link,banner_image,script',
+            ]);
+        }
 
         $ptc = new Ptc();
         $this->submit($request, $ptc);
@@ -155,6 +159,11 @@ class ManagePtcController extends Controller
             $ptc->status = ($request->status == 'on' ? 1 : 0);
         }
 
+        $IfrOr =  $request->IfrOr;
+        $ptc->IfrOr = $IfrOr;
+        if($IfrOr=='iframe'){
+
+
         if ($request->ads_type == 1) {
             $ptc->ads_body = $request->website_link;
         } elseif ($request->ads_type == 2) {
@@ -174,6 +183,13 @@ class ManagePtcController extends Controller
         } else {
             $ptc->ads_body = $request->youtube;
         }
+
+    }else{
+
+        $ptc->ads_body = $request->ads_body;
+    }
+
+
         $ptc->save();
     }
 

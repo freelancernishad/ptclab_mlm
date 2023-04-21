@@ -9,6 +9,10 @@ class PtcView extends Model
 {
     use Searchable;
 
+    protected $fillable = [
+        'status'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

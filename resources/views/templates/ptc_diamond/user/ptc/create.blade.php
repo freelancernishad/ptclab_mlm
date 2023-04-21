@@ -16,39 +16,20 @@
                 <div class="form-group col-md-4">
                     <label for="ads_type" class="form-label">@lang('Advertisement Type')</label>
                     <div class="form--select">
-                        <select class="form-select" id="ads_type" name="ads_type" required>
-                            <option value="1" {{ old('ads_type')==1?'selected':'' }}>@lang('Link / URL')</option>
-                            <option value="2" {{ old('ads_type')==2?'selected':'' }}>@lang('Banner / Image')</option>
-                            <option value="3" {{ old('ads_type')==3?'selected':'' }}>@lang('Script / Code')</option>
-                            <option value="4" {{ old('ads_type')==4?'selected':'' }}>@lang('Youtube Embeded Link')</option>
-                            <option value="5" {{ old('ads_type')==5?'selected':'' }}>@lang('Facebook')</option>
+                        <select name="IfrOr" id="IfrOr" class="form-control" required>
+                            <option value="">Select</option>
+                            <option>Iframe</option>
+                            <option>Original</option>
                         </select>
                     </div>
                     <pre class="text--danger">@lang('Price per ad') <span class="price-per-ad"></span> {{ $general->cur_text }}</pre>
                 </div>
-                <div class="form-group col-md-8" id="websiteLink">
-                    <label class="form-label">@lang('Link')</label>
-                    <input type="text" name="website_link" class="form-control form--control" value="{{ old('website_link') }}" placeholder="@lang('http://example.com')">
-                </div>
 
 
-                <div class="form-group col-md-8" id="Facebook">
-                    <label>@lang('Link')</label>
-                    <input type="text" name="website_link" class="form-control" value="{{ old('website_link') }}" placeholder="@lang('http://example.com')">
-                </div>
+                <div class="row pt-5 mt-5 border-top" id="TypeByFrom"></div>
 
-                <div class="form-group col-md-8" id="youtube">
-                    <label class="form-label">@lang('Youtube Embeded Link')</label>
-                    <input type="text" name="youtube" class="form-control form--control" value="{{ old('youtube') }}" placeholder="@lang('https://www.youtube.com/embed/your_code')">
-                </div>
-                <div class="form-group col-md-8 d-none" id="bannerImage">
-                    <label class="form-label">@lang('Banner')</label>
-                    <input type="file" class="form-control form--control"  name="banner_image">
-                </div>
-                <div class="form-group col-md-8 d-none" id="script">
-                    <label class="form-label">@lang('Script')</label>
-                    <textarea  name="script" class="form-control form--control" rows="5">{{ old('script') }}</textarea>
-                </div>
+
+
 
                 <div class="form-group col-md-6">
                     <label class="form-label">@lang('Duration')</label>
@@ -66,6 +47,22 @@
                     </div>
                     <pre class="text--danger"><span class="total-price"></span> {{ $general->cur_text }} @lang('will cut from your balance')</pre>
                 </div>
+
+
+                <div class="form-group col-md-6">
+                    <label class="form-label">@lang('Prove Files')</label>
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                     </div>
+
+
+                    <pre class="text--danger"><span class="total-price"></span> {{ $general->cur_text }} @lang('will cut from your balance')</pre>
+                </div>
+
+
+
             </div>
             <div class="form-group col-md-12">
                 <button type="submit" class="btn btn--base btn--lg w-100">@lang('Submit')</button>
@@ -77,7 +74,55 @@
 
 
 @push('script')
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
+
+
+
+(function($){
+        "use strict";
+
+        $('#IfrOr').change(function(){
+            var IfrOr = $(this).val();
+            if (IfrOr == 'Iframe') {
+                ads_type('iframe');
+            }else if(IfrOr == 'Original'){
+                ads_type('original');
+            }else{
+
+            }
+        });
+
+
+
+    })(jQuery);
+
+
+
+
+    function ads_type(type='iframe',adType=1) {
+
+        const endpoint = `/api/ads/component?type=${type}&adtype=${adType}`;
+        $.get(endpoint, function(data) {
+            // console.log(data)
+            setTimeout(() => {
+
+                $('#TypeByFrom').html(data);
+            }, 3000);
+        });
+
+
+    }
+
+
+
+
+
+
+
+
+
+
     (function($){
         "use strict";
         var price = 0

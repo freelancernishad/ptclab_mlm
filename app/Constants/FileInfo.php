@@ -53,6 +53,11 @@ class FileInfo
         $data['ptc'] = [
             'path'      => 'assets/images/ptc',
         ];
+
+        $data['ptcView'] = [
+            'path'      => 'assets/images/ptc/view',
+        ];
+
         $data['userProfile'] = [
             'path'      =>'assets/images/user/profile',
             'size'      =>'350x300',

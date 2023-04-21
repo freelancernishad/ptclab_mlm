@@ -2,19 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\Auth\RegisterController;
-
-
-
-
-
-
-
-
+use Illuminate\Http\Request;
 
 
 
 
 Route::namespace('User\Auth')->name('user.')->group(function () {
+
 
 
     Route::get('/user-tree-view/{id}', function ($id) {
@@ -130,6 +124,9 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::get('show/{hash}', 'show')->name('show');
                 Route::post('confirm/{hash}', 'confirm')->name('confirm');
                 Route::get('my-ads', 'ads')->name('ads');
+                Route::get('my-ads/viewed/{id}', 'adsViewed')->name('viewed');
+                Route::get('my-ads/viewed/status/{id}', 'adsViewedStatus')->name('viewed.status');
+                Route::post('my-ads/confirm/status/{id}', 'confirmStatus')->name('confirm.status');
                 Route::get('create', 'create')->name('create');
                 Route::post('store', 'store')->name('store');
                 Route::get('edit/{id}', 'edit')->name('edit');

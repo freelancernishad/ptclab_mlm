@@ -6,6 +6,9 @@
             <div class="card-body">
                 <form role="form" method="POST" action="{{ route("admin.ptc.update",$ptc->id) }}" enctype="multipart/form-data">
                     @csrf
+
+                    <input type="hidden" name="IfrOr" value="{{ $ptc->IfrOr }}">
+
                     <div class="row">
                        <div class="form-group col-md-8">
                         <label>@lang('Title of the Ad')</label>
@@ -59,6 +62,11 @@
                             @php echo $ptc->typeBadge @endphp
                         </div>
                     </div>
+
+                    @if($ptc->IfrOr=='iframe')
+
+
+
                     @if($ptc->ads_type == 1)
 
                     <div class="form-group col-md-8">
@@ -92,6 +100,19 @@
                             <input type="text" name="youtube" class="form-control" value="{{ $ptc->ads_body }}">
                         </div>
                     @endif
+
+
+                    @else
+                    <div class="form-group col-md-12">
+                        <label>@lang('Description') <span class="text-danger">*</span></label>
+                        <textarea class="tinymce-editor" name="ads_body">{{ $ptc->ads_body }}</textarea>
+
+                    </div>
+
+                    @endif
+
+
+
                 </div>
                 <div class="form-group col-md-12 mt-3">
                     <button type="submit" class="btn btn--primary h-45 w-100">@lang('Submit')</button>
@@ -109,6 +130,7 @@
 
 
 @push('script')
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     (function($){
         "use strict";
@@ -139,5 +161,31 @@
 
         $('[name=status]').val('{{ $ptc->status }}');
     })(jQuery);
+
+
+
+
+        tinymce.init({
+            selector: 'textarea.tinymce-editor',
+            height: 300,
+            menubar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount', 'image'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+            content_css: '//www.tiny.cloud/css/codepen.min.css'
+        });
+
+
+
+
+
+
+
 </script>
 @endpush

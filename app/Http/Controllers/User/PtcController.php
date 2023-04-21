@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Models\Ptc;
 use App\Models\PtcView;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Rules\FileTypeValidate;
+use App\Http\Controllers\Controller;
 
 class PtcController extends Controller
 {
@@ -69,7 +70,19 @@ class PtcController extends Controller
             return back()->withNotify($notify);
         }
 
-        return view($this->activeTemplate . 'user.ptc.show', compact('ptc', 'pageTitle'));
+        if($ptc->IfrOr=='Original'){
+
+            return view($this->activeTemplate . 'user.ptc.showOrg', compact('ptc', 'pageTitle'));
+        }else{
+
+            return view($this->activeTemplate . 'user.ptc.show', compact('ptc', 'pageTitle'));
+        }
+
+
+
+
+
+
     }
 
     public function clicks()
@@ -81,11 +94,41 @@ class PtcController extends Controller
 
     public function confirm(Request $request, $hash)
     {
-        $request->validate([
-            'first_number'  => 'required|integer',
-            'second_number' => 'required|integer',
-            'result'        => 'required|integer',
-        ]);
+
+
+
+          $file = $request->file;
+        $filesCount = count($file);
+
+        $files = [];
+
+
+        for ($i=0; $i < $filesCount; $i++) {
+            if ($file[$i]) {
+                $directory     = date("Y") . "/" . date("m") . "/" . date("d");
+                $path          = getFilePath('ptcView') . '/' . $directory;
+                 $filename      = $directory . '/' . fileUploader($file[$i], $path);
+                array_push($files,$filename);
+            }
+        }
+
+        die();
+
+        $user = auth()->user();
+        $id = $this->checkEligibleAd($hash, $user);
+        $ptc = Ptc::where('id', $id)->where('remain', '>', 0)->where('status', 1)->firstOrFail();
+
+        if($ptc->IfrOr=='Original'){
+
+        }else{
+            $request->validate([
+                'first_number'  => 'required|integer',
+                'second_number' => 'required|integer',
+                'result'        => 'required|integer',
+            ]);
+
+
+
 
         $sum = $request->first_number + $request->second_number;
 
@@ -94,7 +137,7 @@ class PtcController extends Controller
             return back()->withNotify($notify);
         }
 
-        $user = auth()->user();
+    }
 
         if (!$user->plan_id) {
             $notify[] = ['error', 'You\'ve no subscription plan. Please subscribe a plan first'];
@@ -106,14 +149,14 @@ class PtcController extends Controller
             return back()->withNotify($notify);
         }
 
-        $id = $this->checkEligibleAd($hash, $user);
+
 
         if (!$id) {
             $notify[] = ['error', "You are not eligible for this link"];
             return redirect()->route('user.home')->withNotify($notify);
         }
 
-        $ptc = Ptc::where('id', $id)->where('remain', '>', 0)->where('status', 1)->firstOrFail();
+
 
         if ($user->id == $ptc->user_id) {
             $notify[] = ['error', 'You couldn\'t view your own advertisement'];
@@ -132,11 +175,19 @@ class PtcController extends Controller
             return back()->withNotify($notify);
         }
 
+
         $ptc->increment('showed');
         $ptc->decrement('remain');
         $ptc->save();
 
-        $user->balance += $ptc->amount;
+
+        if($ptc->IfrOr=='Original'){
+        }else{
+            $user->balance += $ptc->amount;
+        }
+
+
+
         $user->save();
 
         $trx                       = getTrx();
@@ -155,10 +206,28 @@ class PtcController extends Controller
         $view->ptc_id    = $ptc->id;
         $view->user_id   = $user->id;
         $view->amount    = $ptc->amount;
+        $view->description    = $ptc->description;
+        $view->files    = json_encode($files);
+
+
+        if($ptc->IfrOr=='Original'){
+            $view->status    = 'pending';
+        }else{
+            $view->status    = 'completed';
+        }
+
+
+
+
         $view->view_date = now();
         $view->save();
 
-        levelCommission($user, $ptc->amount, 'ptc_view_commission', $trx);
+
+        if($ptc->IfrOr=='Original'){
+        }else{
+            levelCommission($user, $ptc->amount, 'ptc_view_commission', $trx);
+        }
+
 
         $notify[] = ['success', 'Successfully viewed this ads'];
         return redirect()->route('user.ptc.index')->withNotify($notify);
@@ -185,6 +254,26 @@ class PtcController extends Controller
         return view($this->activeTemplate . 'user.ptc.ads', compact('ads', 'pageTitle'));
     }
 
+    public function adsViewed($id)
+    {
+        $this->userPostEnabled();
+        $pageTitle = 'My Ads Viewed';
+
+        $ads       = PtcView::with(['user','ptc'])->where(['user_id'=> auth()->id(),'ptc_id'=>$id])->orderBy('id', 'desc')->paginate(getPaginate());
+
+        return view($this->activeTemplate . 'user.ptc.adsViewed', compact('ads', 'pageTitle'));
+    }
+
+    public function adsViewedStatus($id)
+    {
+        $this->userPostEnabled();
+        $pageTitle = 'My Ads Viewed';
+
+        $ptc       = PtcView::with(['user','ptc'])->find($id);
+
+        return view($this->activeTemplate . 'user.ptc.adsViewedStatus', compact('ptc', 'pageTitle'));
+    }
+
     public function create()
     {
         $this->userPostEnabled();
@@ -195,6 +284,8 @@ class PtcController extends Controller
     public function store(Request $request)
     {
         $this->userPostEnabled();
+        $IfrOr =  $request->IfrOr;
+        if($IfrOr=='iframe'){
         $this->validation($request, [
             'website_link' => 'nullable|url|required_without_all:banner_image,script,youtube',
             'banner_image' => 'nullable|mimes:jpeg,jpg,png,gif|required_without_all:website_link,script,youtube',
@@ -202,7 +293,7 @@ class PtcController extends Controller
             'youtube'      => 'nullable|url|required_without_all:website_link,banner_image,script',
             'max_show'     => 'required|integer|min:1',
         ]);
-
+    }
         $ptc = new Ptc();
         return $this->submit($request, $ptc);
     }
@@ -279,6 +370,11 @@ class PtcController extends Controller
         $ptc->ads_type = $request->ads_type;
         $ptc->status   = $general->ad_auto_approve ? 1 : 2;
 
+        $IfrOr =  $request->IfrOr;
+        $ptc->IfrOr = $IfrOr;
+        if($IfrOr=='iframe'){
+
+
         if ($request->ads_type == 1) {
             $ptc->ads_body = $request->website_link;
         } elseif ($request->ads_type == 2) {
@@ -300,6 +396,9 @@ class PtcController extends Controller
         } else {
             $ptc->ads_body = $request->youtube;
         }
+    }else{
+        $ptc->ads_body = $request->ads_body;
+    }
 
         $ptc->save();
 
@@ -343,4 +442,37 @@ class PtcController extends Controller
             abort(404);
         }
     }
+
+    public function confirmStatus(Request $request,$id)
+    {
+        $status = $request->status;
+         $ptc_view = PtcView::with(['ptc','user'])->find($id);
+
+
+        if($ptc_view->ptc->IfrOr=='Original'){
+        }else{
+            $ptc_view->user->balance += $ptc_view->ptc->amount;
+            $ptc_view->user->save();
+        }
+
+        if($ptc_view->ptc->IfrOr=='Original'){
+        }else{
+            $trx                       = getTrx();
+            levelCommission($ptc_view->user, $ptc_view->ptc->amount, 'ptc_view_commission', $trx);
+        }
+
+
+
+        if($status=='Approve'){
+            $ptc_view->update(['status'=>'Approved']);
+            $notify[] = ['success', 'Successfully Approved this ads'];
+            return redirect()->route('user.ptc.viewed',$ptc_view->ptc->id)->withNotify($notify);
+        }else{
+            $ptc_view->update(['status'=>'Rejected']);
+            $notify[] = ['success', 'Successfully Rejected this ads'];
+            return redirect()->route('user.ptc.viewed',$ptc_view->ptc->id)->withNotify($notify);
+        }
+    }
+
+
 }

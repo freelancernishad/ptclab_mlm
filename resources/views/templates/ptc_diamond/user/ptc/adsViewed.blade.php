@@ -9,9 +9,8 @@
     <table class="table table custom--table">
         <thead>
             <tr>
-                <th scope="col">@lang('Title')</th>
-                <th scope="col">@lang('Type')</th>
-                <th scope="col">@lang('Viewed')</th>
+                <th scope="col">@lang('Date')</th>
+                <th scope="col">@lang('Username')</th>
                 <th scope="col">@lang('Status')</th>
                 <th scope="col">@lang('Action')</th>
             </tr>
@@ -19,37 +18,20 @@
         <tbody>
             @forelse($ads as $ptc)
             <tr>
-                <td>{{strLimit($ptc->title,20)}}</td>
+                <td>{{ date('Y-m-d H:i', strtotime($ptc->created_at)) }}</td>
+                <td>{{ $ptc->user->username }}</td>
                 <td>
-                    @php echo $ptc->typeBadge @endphp
-                </td>
-                <td>{{$ptc->showed}}</td>
-
-                <td>
-                    @php echo $ptc->statusBadge; @endphp
-                </td>
-                <td>
-
-                    <a class="btn btn--success btn-sm" href="{{route('user.ptc.viewed',$ptc->id)}}">Viewed</a>
-
-
-                    @if ($ptc->status == 3)
-                        <button class="btn btn--base btn-sm" disabled><i class="la la-pen"></i></button>
+                    @if ($ptc->status=='pending')
+                        <span class="btn btn-warning">Pending</span>
                     @else
-                        <a class="btn btn--base btn-sm" href="{{route('user.ptc.edit',$ptc->id)}}"><i class="la la-pen"></i></a>
+                        <span class="btn btn-success">Completed</span>
                     @endif
-                    @if($ptc->status == 1 || $ptc->status == 0)
-                        @if($ptc->status == 1)
-                            <a class="btn btn--danger btn-sm" href="{{route('user.ptc.status',$ptc->id)}}"><i class="la la-eye-slash"></i></a>
-                        @else
-                            <a class="btn btn--success btn-sm" href="{{route('user.ptc.status',$ptc->id)}}"><i class="la la-eye"></i></a>
-                        @endif
-                    @else
-                        <button class="btn btn--danger btn-sm" disabled><i class="la la-eye-slash"></i></button>
-                    @endif
-                    <a href="javascript:void(0)" class="btn btn--primary btn-sm detailBtn" data-title="{{strLimit($ptc->title,20)}}" data-duration="{{$ptc->duration}} @lang('Sec')" data-max_show="{{$ptc->max_show}}" data-viewed="{{$ptc->showed}}" data-remain="{{$ptc->remain}}" data-amount="{{ showAmount($ptc->amount) }} {{$general->cur_text}}">
-                        <i class="la la-desktop"></i>
-                    </a>
+                </td>
+
+
+
+                <td>
+                    <a class="btn btn--success btn-sm" href="{{route('user.ptc.viewed.status',$ptc->id)}}">View</a>
                 </td>
 
             </tr>

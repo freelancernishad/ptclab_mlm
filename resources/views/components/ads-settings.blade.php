@@ -26,15 +26,14 @@
             <div class="input-group">
                 <select name="uploaded[]" class="form-control" value="{{ $adssetting->uploaded }}" required>
                     <option value="">Select</option>
-                    <option @php if($adssetting->uploaded=='Image')echo'selected'; @endphp>Image</option>
-                    <option @php if($adssetting->uploaded=='Url')echo'selected'; @endphp>Url</option>
-                    <option @php if($adssetting->uploaded=='Youtube link')echo'selected'; @endphp>Youtube link</option>
-                    <option @php if($adssetting->uploaded=='Video')echo'selected'; @endphp>Video</option>
-                    <option @php if($adssetting->uploaded=='Script/code')echo'selected'; @endphp>Script/code</option>
+                    <option value="1" @php if($adssetting->uploaded==1)echo'selected'; @endphp>Url</option>
+                    <option value="2" @php if($adssetting->uploaded==2)echo'selected'; @endphp>Image</option>
+                    <option value="3" @php if($adssetting->uploaded==3)echo'selected'; @endphp>Script/code</option>
+                    <option value="4" @php if($adssetting->uploaded==4)echo'selected'; @endphp>Youtube link</option>
                 </select>
             </div>
         </div>
-
+{{--
         <div class="form-group">
             <label>Iframe/Original</label>
             <div class="input-group">
@@ -44,7 +43,7 @@
                     <option @php if($adssetting->IfOr=='Original')echo'selected'; @endphp>Original</option>
                 </select>
             </div>
-        </div>
+        </div> --}}
         <div class="form-group">
             <label>@lang('Ads Price')</label>
             <div class="input-group">
