@@ -158,7 +158,7 @@ class ManagePtcController extends Controller
         } else {
             $ptc->status = ($request->status == 'on' ? 1 : 0);
         }
-
+        $ptc->filesSupports = json_encode($request->filesSupports);
         $IfrOr =  $request->IfrOr;
         $ptc->IfrOr = $IfrOr;
         if($IfrOr=='iframe'){

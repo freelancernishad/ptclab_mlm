@@ -35,19 +35,23 @@
                         </div>
                         <h6>SCREENSHOT PROOF REQUIRED #1 </h6>
 
+                        @php
+                            $filesSupports = json_decode($ptc->filesSupports);
+                        @endphp
+
                         <div class="form-group">
                             <label for="">Proof 1</label>
-                            <input type="file" name="file[0]" class="form-control">
+                            <input type="file" name="file[0]" accept="@if(is_array($filesSupports)) @foreach($filesSupports as $ext) .{{ $ext }}, @endforeach @else image/*  @endif" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="">Proof 2</label>
-                            <input type="file"  name="file[1]" class="form-control">
+                            <input type="file"  name="file[1]" accept="@if(is_array($filesSupports)) @foreach($filesSupports as $ext) .{{ $ext }}, @endforeach  @else image/* @endif" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="">Proof 3</label>
-                            <input type="file"  name="file[2]" class="form-control">
+                            <input type="file"  name="file[2]" accept="@if(is_array($filesSupports)) @foreach($filesSupports as $ext) .{{ $ext }}, @endforeach  @else image/* @endif" class="form-control">
                         </div>
 
                         <br/>

@@ -109,6 +109,25 @@
 
                     </div>
 
+                    <div class="form-group col-md-12">
+                        <label class="form-label">@lang('Prove Files')</label>
+                        <select class="select2-multi-select form-control" name="filesSupports[]" multiple>
+                            <option @if(in_array('jpg', json_decode($ptc->filesSupports))) selected @endif value="jpg">JPG</option>
+                            <option @if(in_array('jpeg', json_decode($ptc->filesSupports))) selected @endif value="jpeg">JPEG</option>
+                            <option @if(in_array('png', json_decode($ptc->filesSupports))) selected @endif value="png">PNG</option>
+                            <option @if(in_array('pdf', json_decode($ptc->filesSupports))) selected @endif value="pdf">PDF</option>
+                            <option @if(in_array('doc', json_decode($ptc->filesSupports))) selected @endif value="doc">DOC</option>
+                            <option @if(in_array('docx', json_decode($ptc->filesSupports))) selected @endif value="docx">DOCX</option>
+                            <option @if(in_array('txt', json_decode($ptc->filesSupports))) selected @endif value="txt">TXT</option>
+                            <option @if(in_array('xlx', json_decode($ptc->filesSupports))) selected @endif value="xlx">XLX</option>
+                            <option @if(in_array('xlsx', json_decode($ptc->filesSupports))) selected @endif value="xlsx">XLSX</option>
+                            <option @if(in_array('csv', json_decode($ptc->filesSupports))) selected @endif value="csv">CSV</option>
+                        </select>
+
+                    </div>
+
+
+
                     @endif
 
 

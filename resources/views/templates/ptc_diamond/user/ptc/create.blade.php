@@ -1,5 +1,8 @@
 @extends($activeTemplate.'layouts.master')
 @section('content')
+
+<link rel="stylesheet" href="{{asset('assets/admin/css/vendor/select2.min.css')}}">
+
 <div class="text-end mb-3">
     <a href="{{ route('user.ptc.ads') }}" class="btn btn--base btn-sm">@lang('My Advertisements')</a>
 </div>
@@ -49,16 +52,21 @@
                 </div>
 
 
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-12">
                     <label class="form-label">@lang('Prove Files')</label>
+                    <select class="select2-multi-select form-control" name="filesSupports[]" multiple>
+                        <option value="jpg">JPG</option>
+                        <option value="jpeg">JPEG</option>
+                        <option value="png">PNG</option>
+                        <option value="pdf">PDF</option>
+                        <option value="doc">DOC</option>
+                        <option value="docx">DOCX</option>
+                        <option value="txt">TXT</option>
+                        <option value="xlx">XLX</option>
+                        <option value="xlsx">XLSX</option>
+                        <option value="csv">CSV</option>
+                    </select>
 
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                     </div>
-
-
-                    <pre class="text--danger"><span class="total-price"></span> {{ $general->cur_text }} @lang('will cut from your balance')</pre>
                 </div>
 
 
@@ -74,9 +82,11 @@
 
 
 @push('script')
+
+<script src="{{asset('assets/admin/js/vendor/select2.min.js')}}"></script>
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-
+$('.select2-multi-select').select2();
 
 
 (function($){

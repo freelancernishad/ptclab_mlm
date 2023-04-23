@@ -112,7 +112,7 @@ class PtcController extends Controller
             }
         }
 
-        die();
+
 
         $user = auth()->user();
         $id = $this->checkEligibleAd($hash, $user);
@@ -283,6 +283,7 @@ class PtcController extends Controller
 
     public function store(Request $request)
     {
+
         $this->userPostEnabled();
         $IfrOr =  $request->IfrOr;
         if($IfrOr=='iframe'){
@@ -372,6 +373,9 @@ class PtcController extends Controller
 
         $IfrOr =  $request->IfrOr;
         $ptc->IfrOr = $IfrOr;
+
+        $ptc->filesSupports = json_encode($request->filesSupports);
+
         if($IfrOr=='iframe'){
 
 
