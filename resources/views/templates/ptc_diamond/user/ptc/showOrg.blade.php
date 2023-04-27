@@ -41,7 +41,7 @@
 
                         <div class="form-group">
                             <label for="">Proof 1</label>
-                            <input type="file" name="file[0]" accept="@if(is_array($filesSupports)) @foreach($filesSupports as $ext) .{{ $ext }}, @endforeach @else image/*  @endif" class="form-control">
+                            <input type="file" name="file[0]" accept="@if(is_array($filesSupports)) @foreach($filesSupports as $ext) .{{ $ext }}, @endforeach @else image/*  @endif" class="form-control" required>
                         </div>
 
                         <div class="form-group">
