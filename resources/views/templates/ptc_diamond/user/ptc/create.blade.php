@@ -68,6 +68,7 @@
                         <option value="jpg">JPG</option>
                         <option value="jpeg">JPEG</option>
                         <option value="png">PNG</option>
+                        <option value="mp4">MP4</option>
                         <option value="pdf">PDF</option>
                         <option value="doc">DOC</option>
                         <option value="docx">DOCX</option>
