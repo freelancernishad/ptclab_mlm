@@ -119,6 +119,7 @@
                             <option @if(is_array($filesSupports))  @if(in_array('jpg', $filesSupports)) selected @endif @endif value="jpg">JPG</option>
                             <option @if(is_array($filesSupports))  @if(in_array('jpeg', $filesSupports)) selected @endif @endif value="jpeg">JPEG</option>
                             <option @if(is_array($filesSupports))  @if(in_array('png', $filesSupports)) selected @endif @endif value="png">PNG</option>
+                            <option @if(is_array($filesSupports))  @if(in_array('mp4', $filesSupports)) selected @endif @endif value="mp4">MP4</option>
                             <option @if(is_array($filesSupports))  @if(in_array('pdf', $filesSupports)) selected @endif @endif value="pdf">PDF</option>
                             <option @if(is_array($filesSupports))  @if(in_array('doc', $filesSupports)) selected @endif @endif value="doc">DOC</option>
                             <option @if(is_array($filesSupports))  @if(in_array('docx', $filesSupports)) selected @endif @endif value="docx">DOCX</option>
