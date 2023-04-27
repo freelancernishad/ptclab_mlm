@@ -97,29 +97,22 @@ class PtcController extends Controller
 
 
 
-          $file = $request->file;
-        $filesCount = count($file);
-
-        $files = [];
-
-
-        for ($i=0; $i < $filesCount; $i++) {
-            if ($file[$i]) {
-                $directory     = date("Y") . "/" . date("m") . "/" . date("d");
-                $path          = getFilePath('ptcView') . '/' . $directory;
-                 $filename      = $directory . '/' . fileUploader($file[$i], $path);
-                array_push($files,$filename);
-            }
-        }
-
-
-
         $user = auth()->user();
         $id = $this->checkEligibleAd($hash, $user);
         $ptc = Ptc::where('id', $id)->where('remain', '>', 0)->where('status', 1)->firstOrFail();
 
         if($ptc->IfrOr=='Task ads'){
-
+            $file = $request->file;
+            $filesCount = count($file);
+            $files = [];
+            for ($i=0; $i < $filesCount; $i++) {
+                if ($file[$i]) {
+                    $directory     = date("Y") . "/" . date("m") . "/" . date("d");
+                    $path          = getFilePath('ptcView') . '/' . $directory;
+                    $filename      = $directory . '/' . fileUploader($file[$i], $path);
+                    array_push($files,$filename);
+                }
+            }
         }else{
             $request->validate([
                 'first_number'  => 'required|integer',
@@ -207,10 +200,11 @@ class PtcController extends Controller
         $view->user_id   = $user->id;
         $view->amount    = $ptc->amount;
         $view->description    = $ptc->description;
-        $view->files    = json_encode($files);
+
 
 
         if($ptc->IfrOr=='Task ads'){
+            $view->files    = json_encode($files);
             $view->status    = 'pending';
         }else{
             $view->status    = 'completed';
