@@ -11,6 +11,9 @@ Route::namespace('User\Auth')->name('user.')->group(function () {
 
 
 
+
+
+
     Route::get('/user-tree-view/{id}', function ($id) {
         $user = App\Models\User::find($id);
         $tree = getTree($id);

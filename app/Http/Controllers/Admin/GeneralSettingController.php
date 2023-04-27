@@ -223,12 +223,13 @@ class GeneralSettingController extends Controller
 
             // print_r($request->adsType[$i]);
             array_push($adsData,[
+                'id'=>$request->id[$i],
                 'adsName'=>$request->adsName[$i],
                 'adsType'=>$request->adsType[$i],
                 'ad_price'=>$request->ad_price[$i],
                 'amount_for_user'=>$request->amount_for_user[$i],
                 'uploaded'=>$request->uploaded[$i],
-                'IfOr'=>$request->IfOr[$i],
+                // 'IfOr'=>$request->IfOr[$i],
             ]);
         }
 

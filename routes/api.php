@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\GeneralSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,27 @@ Route::namespace('Api')->name('api.')->group(function () {
         $ads_settings = gs()->ads_setting->adsData;
 
         return view('components.ads-create', ['adssettings' => $ads_settings,'type' => $request->type,'adtype' => $request->adtype,])->render();
+    });
+
+
+    Route::get('/ads/get/prices/{id}', function (Request $request,$id) {
+
+        $id = strval($id);
+
+
+
+           $ads_settings = gs()->ads_setting->adsData;
+
+           $datas = [];
+        foreach ($ads_settings as $key => $value) {
+            if($value->id==$id){
+                array_push($datas,$value);
+            }
+        }
+        return $datas[0];
+
+
+        // return view('components.ads-create', ['adssettings' => $ads_settings,'type' => $request->type,'adtype' => $request->adtype,])->render();
     });
 
 });

@@ -237,7 +237,7 @@ const parent = document.getElementById("parent");
 addButton.addEventListener("click", () => {
     const elements = document.getElementsByClassName("adscolums");
 const count = elements.length;
-console.log(count);
+// console.log(count);
 
   const newDiv = document.createElement("div");
   newDiv.classList.add("col-md-3");
@@ -246,6 +246,7 @@ console.log(count);
 
       @php
         $defaltData = [
+          'id'=>'`+ count +`',
           'adsName'=>'',
           'adsType'=>'',
           'uploaded'=>'',

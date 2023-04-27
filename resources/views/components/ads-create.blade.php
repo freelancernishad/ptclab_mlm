@@ -1,11 +1,11 @@
 
-@if($type == "original")
+@if($type == "Task ads")
 
     <div class="form-group col-md-12">
         <label for="ads_type">@lang('Advertisement Type')</label>
         <select class="form-control" id="ads_type" name="ads_type" required>
             @foreach ($adssettings as $ads_setting)
-            <option value="{{ $ads_setting->uploaded }}" {{ old('ads_type')==$ads_setting->adsType?'selected':'' }}>{{ $ads_setting->adsName }}</option>
+            <option value="{{ $ads_setting->id }}" {{ old('ads_type')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
             @endforeach
 
         </select>
@@ -35,14 +35,15 @@
 
     <div class="form-group col-md-4">
         <label for="ads_type">@lang('Advertisement Type')</label>
-        <select class="form-control" id="ads_type" name="ads_type"  required>
+        <select class="form-control" id="ads_type" name="ads_type"   required>
             <option value="">Select</option>
             @foreach ($adssettings as $ads_setting)
-            <option value="{{ $ads_setting->uploaded }}" {{ old('ads_type')==$ads_setting->adsType?'selected':'' }}>{{ $ads_setting->adsName }}</option>
+            <option value="{{ $ads_setting->id }}" {{ old('ads_type')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
             @endforeach
 
 
         </select>
+        <pre class="text--danger">@lang('Price per ad') <span class="price-per-ad"></span> {{ $general->cur_text }}</pre>
     </div>
 
 
@@ -53,8 +54,13 @@
 
 <script>
 
-    $('#ads_type').change(function(){
-        var ads_type = $(this).val();
+
+
+
+   function ads_typeChange(ads_type,result){
+
+        var price = result.ad_price;
+
         if(ads_type==1){
 
             var html = `
@@ -67,7 +73,7 @@
 
             var html = `
             <label>@lang('Banner')</label>
-    <input type="file" class="form-control"  name="banner_image">
+            <input type="file" class="form-control"  name="banner_image">
             `;
             $('#inputField').html(html);
 
@@ -75,7 +81,7 @@
 
             var html = `
             <label>@lang('Script')</label>
-    <textarea  name="script" class="form-control">{{ old('script') }}</textarea>
+            <textarea  name="script" class="form-control">{{ old('script') }}</textarea>
             `;
             $('#inputField').html(html);
 
@@ -89,7 +95,10 @@
 
         }
 
-    });
+        $('.price-per-ad').text(price);
+        $('[name=max_show]').trigger('input');
+    };
+
 
 
 </script>

@@ -47,12 +47,12 @@
 
                     <div class="row pt-5 mt-5 border-top">
                         <div class="form-group col-md-4">
-                        <label>Iframe/Original</label>
+                        <label>Iframe/Task ads</label>
                         <div class="input-group">
                             <select name="IfrOr" id="IfrOr" class="form-control" required>
                                 <option value="">Select</option>
                                 <option>Iframe</option>
-                                <option>Original</option>
+                                <option>Task ads</option>
                             </select>
                         </div>
                     </div>
@@ -97,8 +97,8 @@
             var IfrOr = $(this).val();
             if (IfrOr == 'Iframe') {
                 ads_type('iframe');
-            }else if(IfrOr == 'Original'){
-                ads_type('original');
+            }else if(IfrOr == 'Task ads'){
+                ads_type('Task ads');
             }else{
 
             }
@@ -111,21 +111,63 @@
 
 
 
-    function ads_type(type='Iframe',adType=1) {
+
+    function ads_type(type='iframe',adType=1) {
+
+var price = 0
+const endpoint = `/api/ads/component?type=${type}&adtype=${adType}`;
+$.get(endpoint, function(data) {
+    // console.log(data)
+    setTimeout(() => {
+
+        $('#TypeByFrom').html(data);
 
 
-        const endpoint = `/api/ads/component?type=${type}&adtype=${adType}`;
+
+    document.getElementById('ads_type').addEventListener('change', function() {
+
+    console.log('You selected: ', this.value);
+
+    var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+    };
+
+    fetch(`/api/ads/get/prices/${this.value}`, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        price = result.ad_price
+
+    ads_typeChange(result.uploaded,result);
+    })
+    .catch(error => console.log('error', error));
 
 
-        $.get(endpoint, function(data) {
-            // console.log(data)
-            setTimeout(() => {
+    });
 
-                $('#TypeByFrom').html(data);
-            }, 1000);
-        });
 
-    }
+
+
+
+    $('.price-per-ad').text(price);
+    $('[name=max_show]').trigger('input');
+
+
+    $('[name=max_show]').on('input', function () {
+    var maxShow = $(this).val();
+    var totalPrice = price * maxShow;
+    $('.total-price').text(totalPrice);
+});
+
+
+
+    }, 3000);
+});
+
+
+}
+
+
 
 </script>
 @endpush

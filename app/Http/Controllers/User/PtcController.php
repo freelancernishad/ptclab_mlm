@@ -70,7 +70,7 @@ class PtcController extends Controller
             return back()->withNotify($notify);
         }
 
-        if($ptc->IfrOr=='Original'){
+        if($ptc->IfrOr=='Task ads'){
 
             return view($this->activeTemplate . 'user.ptc.showOrg', compact('ptc', 'pageTitle'));
         }else{
@@ -118,7 +118,7 @@ class PtcController extends Controller
         $id = $this->checkEligibleAd($hash, $user);
         $ptc = Ptc::where('id', $id)->where('remain', '>', 0)->where('status', 1)->firstOrFail();
 
-        if($ptc->IfrOr=='Original'){
+        if($ptc->IfrOr=='Task ads'){
 
         }else{
             $request->validate([
@@ -181,7 +181,7 @@ class PtcController extends Controller
         $ptc->save();
 
 
-        if($ptc->IfrOr=='Original'){
+        if($ptc->IfrOr=='Task ads'){
         }else{
             $user->balance += $ptc->amount;
         }
@@ -210,7 +210,7 @@ class PtcController extends Controller
         $view->files    = json_encode($files);
 
 
-        if($ptc->IfrOr=='Original'){
+        if($ptc->IfrOr=='Task ads'){
             $view->status    = 'pending';
         }else{
             $view->status    = 'completed';
@@ -223,7 +223,7 @@ class PtcController extends Controller
         $view->save();
 
 
-        if($ptc->IfrOr=='Original'){
+        if($ptc->IfrOr=='Task ads'){
         }else{
             levelCommission($user, $ptc->amount, 'ptc_view_commission', $trx);
         }
@@ -453,13 +453,13 @@ class PtcController extends Controller
          $ptc_view = PtcView::with(['ptc','user'])->find($id);
 
 
-        if($ptc_view->ptc->IfrOr=='Original'){
+        if($ptc_view->ptc->IfrOr=='Task ads'){
         }else{
             $ptc_view->user->balance += $ptc_view->ptc->amount;
             $ptc_view->user->save();
         }
 
-        if($ptc_view->ptc->IfrOr=='Original'){
+        if($ptc_view->ptc->IfrOr=='Task ads'){
         }else{
             $trx                       = getTrx();
             levelCommission($ptc_view->user, $ptc_view->ptc->amount, 'ptc_view_commission', $trx);

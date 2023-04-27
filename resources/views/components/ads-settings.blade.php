@@ -8,6 +8,7 @@
         <div class="form-group">
             <label>Name of adds</label>
             <div class="input-group">
+                <input type="hidden"  class="form-control" name="id[]" value="{{ $adssetting->id }}" required>
                 <input type="text"  class="form-control" name="adsName[]" value="{{ $adssetting->adsName }}" required>
 
             </div>
@@ -35,12 +36,12 @@
         </div>
 {{--
         <div class="form-group">
-            <label>Iframe/Original</label>
+            <label>Iframe/Task ads</label>
             <div class="input-group">
                 <select name="IfOr[]" class="form-control" value="{{ $adssetting->IfOr }}" required>
                     <option value="">Select</option>
                     <option @php if($adssetting->IfOr=='Iframe')echo'selected'; @endphp>Iframe</option>
-                    <option @php if($adssetting->IfOr=='Original')echo'selected'; @endphp>Original</option>
+                    <option @php if($adssetting->IfOr=='Task ads')echo'selected'; @endphp>Task ads</option>
                 </select>
             </div>
         </div> --}}
