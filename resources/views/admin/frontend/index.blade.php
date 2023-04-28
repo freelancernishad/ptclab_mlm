@@ -9,15 +9,18 @@
                             @csrf
                             <input type="hidden" name="type" value="content">
                             <div class="row">
+
                                 @php
                                     $imgCount = 0;
                                 @endphp
                                 @foreach($section->content as $k => $item)
+
                                     @if($k == 'images')
                                         @php
                                             $imgCount = collect($item)->count();
                                         @endphp
                                         @foreach($item as $imgKey => $image)
+
                                             <div class="col-md-4">
                                                 <input type="hidden" name="has_image" value="1">
                                                 <div class="form-group">
@@ -25,15 +28,32 @@
                                                     <div class="image-upload">
                                                         <div class="thumb">
                                                             <div class="avatar-preview">
+
+                                                              @php
+                                                                $path = getImage('assets/images/frontend/' . $key .'/'. @$content->data_values->$imgKey,@$section->content->images->$imgKey->size);
+                                                                    $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+                                                                @endphp
+
+                                                                @if($ext=='mp4')
+                                                                <video src="{{getImage('assets/images/frontend/' . $key .'/'. @$content->data_values->$imgKey,@$section->content->images->$imgKey->size) }}" controls id="profilePicPreview">
+                                                                    <button type="button" class="remove-image"><i class="fa fa-times"></i></button>
+                                                                </video>
+                                                                @else
+
                                                                 <div class="profilePicPreview" style="background-image: url({{getImage('assets/images/frontend/' . $key .'/'. @$content->data_values->$imgKey,@$section->content->images->$imgKey->size) }})">
                                                                     <button type="button" class="remove-image"><i class="fa fa-times"></i></button>
                                                                 </div>
+
+                                                                @endif
+
+
                                                             </div>
                                                             <div class="avatar-edit">
-                                                                <input type="file" class="profilePicUpload" name="image_input[{{ @$imgKey }}]" id="profilePicUpload{{ $loop->index }}" accept=".png, .jpg, .jpeg">
+                                                                <input type="file" class="profilePicUpload" name="image_input[{{ @$imgKey }}]" id="profilePicUpload{{ $loop->index }}" accept=".mp4, .png, .jpg, .jpeg">
                                                                 <label for="profilePicUpload{{ $loop->index }}"
                                                                        class="bg--primary">{{__(keyToTitle(@$imgKey))}}</label>
-                                                                <small class="mt-2">@lang('Supported files'): <b>@lang('jpeg'), @lang('jpg'), @lang('png')</b>.
+                                                                <small class="mt-2">@lang('Supported files'): <b>@lang('mp4'), @lang('jpeg'), @lang('jpg'), @lang('png')</b>.
                                                                     @if(@$section->content->images->$imgKey->size)
                                                                         | @lang('Will be resized to'):
                                                                         <b>{{@$section->content->images->$imgKey->size}}</b>

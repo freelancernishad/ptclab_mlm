@@ -8,11 +8,21 @@
 	<div class="container">
 		<div class="row g-4 align-items-center">
 			<div class="col-lg-6">
-				<img
-					src="{{ getImage('assets/images/frontend/contact/' . $contact->data_values->image, '705x595') }}"
-					alt="image"
-					class="img-fluid"
-				/>
+
+
+                @php
+                $path = getImage('assets/images/frontend/contact/' . $contact->data_values->image, '705x595');
+                $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+                @endphp
+
+                @if($ext=='mp4')
+                <video id="myVideo" src="{{ getImage('assets/images/frontend/contact/' . $contact->data_values->image, '705x595') }}" class="img-fluid" playsinline autoplay loop muted></video>
+                @else
+                <img src="{{ getImage('assets/images/frontend/contact/' . $contact->data_values->image, '705x595') }}" alt="image" class="img-fluid"/>
+                @endif
+
+
 			</div>
 			<div class="col-lg-6">
 				<div class="ps-xl-5 contact-form">
@@ -68,4 +78,6 @@
 		</div>
 	</div>
 </div>
+<script>document.getElementById('myVideo').play()</script>
+
 @endsection

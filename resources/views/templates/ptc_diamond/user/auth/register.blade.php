@@ -8,7 +8,22 @@
 	<div class="container">
 		<div class="row g-4 justify-content-between align-items-center">
 			<div class="col-lg-6">
-				<img src="{{ getImage('assets/images/frontend/register/'.$content->data_values->image, '1382x1445') }}" alt="images" class="img-fluid" />
+
+
+                @php
+                $path = getImage('assets/images/frontend/register/'.$content->data_values->image, '1382x1445');
+                $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+                @endphp
+
+                @if($ext=='mp4')
+                <video id="myVideo" src="{{ getImage('assets/images/frontend/register/'.$content->data_values->image, '1382x1445') }}" class="img-fluid" playsinline autoplay loop muted></video>
+                @else
+                <img src="{{ getImage('assets/images/frontend/register/'.$content->data_values->image, '1382x1445') }}" alt="images" class="img-fluid" />
+                @endif
+
+
+
 			</div>
 			<div class="col-lg-6 col-xxl-5">
 				<div class="login-form">
@@ -152,6 +167,7 @@
         </div>
     </div>
 </div>
+<script>document.getElementById('myVideo').play()</script>
 @endsection
 
 @push('style')

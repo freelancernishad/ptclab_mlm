@@ -73,6 +73,7 @@ class FrontendController extends Controller
     public function frontendSections($key)
     {
         $section = @getPageSections()->$key;
+
         if (!$section) {
             return abort(404);
         }
@@ -118,20 +119,27 @@ class FrontendController extends Controller
         $validation_rule    = [];
         $validation_message = [];
         foreach ($request->except('_token', 'video') as $input_field => $val) {
+
             if ($input_field == 'has_image' && $imgJson) {
                 foreach ($imgJson as $imgValKey => $imgJsonVal) {
-                    $validation_rule['image_input.' . $imgValKey]               = ['nullable', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png'])];
+
+
+                    $validation_rule['image_input.' . $imgValKey]               = ['nullable', new FileTypeValidate(['mp4', 'jpg', 'jpeg', 'png'])];
                     $validation_message['image_input.' . $imgValKey . '.image'] = keyToTitle($imgValKey) . ' must be an image';
                     $validation_message['image_input.' . $imgValKey . '.mimes'] = keyToTitle($imgValKey) . ' file type not supported';
                 }
                 continue;
             } elseif ($input_field == 'seo_image') {
-                $validation_rule['image_input'] = ['nullable', 'image', new FileTypeValidate(['jpeg', 'jpg', 'png'])];
+                $validation_rule['image_input'] = ['nullable', 'image', new FileTypeValidate(['mp4', 'jpeg', 'jpg', 'png'])];
                 continue;
             }
             $validation_rule[$input_field] = 'required';
         }
-        $request->validate($validation_rule, $validation_message, ['image_input' => 'image']);
+
+        // dd($validation_rule);
+
+
+        $request->validate($validation_rule, $validation_message,['image_input' => 'image']);
         if ($request->id) {
             $content = Frontend::findOrFail($request->id);
         } else {

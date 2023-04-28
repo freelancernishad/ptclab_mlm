@@ -21,14 +21,14 @@ $(function(){
   });
 });
 
-// activity-list 
+// activity-list
 $(function(){
   $('.activity-list').slimScroll({
     height: '385px'
   });
 });
 
-// recent ticket list 
+// recent ticket list
 $(function(){
   $('.recent-ticket-list__body').slimScroll({
     height: '295px'
@@ -86,14 +86,14 @@ img.css('background-image', function () {
     $('[data-bs-toggle="tooltip"]').tooltip()
   })
 
-  // responsive sidebar expand js 
+  // responsive sidebar expand js
   $('.res-sidebar-open-btn').on('click', function (){
     $('.sidebar').addClass('open');
-  }); 
+  });
 
   $('.res-sidebar-close-btn').on('click', function (){
     $('.sidebar').removeClass('open');
-  }); 
+  });
 
 /* Get the documentElement (<html>) to display the page in fullscreen */
 let elem = document.documentElement;
@@ -130,19 +130,40 @@ $(".select2-auto-tokenize").select2({
 
 
 function proPicURL(input) {
+
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            var preview = $(input).parents('.thumb').find('.profilePicPreview');
-            $(preview).css('background-image', 'url(' + e.target.result + ')');
-            $(preview).addClass('has-image');
-            $(preview).hide();
-            $(preview).fadeIn(650);
+
+            var extension = e.target.result.split(';')[0].split('/')[1];
+
+            if(extension=="mp4"){
+
+                var preview = $(input).parents('.thumb').find('.profilePicPreview');
+                $(preview).css('background-image', 'url()');
+                $(preview).addClass('has-image');
+                $(preview).hide();
+                $(preview).fadeIn(650);
+
+            }else{
+                var preview = $(input).parents('.thumb').find('.profilePicPreview');
+                $(preview).css('background-image', 'url(' + e.target.result + ')');
+                $(preview).addClass('has-image');
+                $(preview).hide();
+                $(preview).fadeIn(650);
+            }
+
+
+
+
+
+
         }
         reader.readAsDataURL(input.files[0]);
     }
 }
 $(".profilePicUpload").on('change', function () {
+
     proPicURL(this);
 });
 
@@ -176,7 +197,7 @@ tooltipTriggerList.map(function (tooltipTriggerEl) {
 });
 
 $.each($('input, select, textarea'), function (i, element) {
-  
+
   if (element.hasAttribute('required')) {
     $(element).closest('.form-group').find('label').first().addClass('required');
   }

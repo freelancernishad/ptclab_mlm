@@ -19,7 +19,7 @@
            "video_link": "text"
         }
     },
-    "login":{ 
+    "login":{
         "builder":true,
         "no_selection": true,
         "name":"Login",
@@ -99,6 +99,7 @@
         "builder":true,
         "name": "About Us",
         "content":{
+
             "images":{
                 "image":{
                     "size": "1024x970"
