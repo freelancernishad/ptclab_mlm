@@ -69,9 +69,7 @@
                                 <label for="">Proof 1</label>
 
                                 @php
-                                    $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-
+                                    $ext = pathinfo($file, PATHINFO_EXTENSION);
                                 @endphp
 
                                 @if($ext=='.mp4')
