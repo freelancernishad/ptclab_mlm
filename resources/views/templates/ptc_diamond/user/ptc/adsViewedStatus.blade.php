@@ -72,7 +72,7 @@
                                     $ext = pathinfo($file, PATHINFO_EXTENSION);
                                 @endphp
 
-                                @if($ext=='.mp4')
+                                @if($ext=='mp4')
                                 <video src="{{ getImage(getFilePath('ptcView').'/'.$file) }}" class="w-100"></video>
                                 @else
                                 <img src="{{ getImage(getFilePath('ptcView').'/'.$file) }}" class="w-100">
