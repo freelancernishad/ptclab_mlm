@@ -253,7 +253,7 @@ class PtcController extends Controller
         $this->userPostEnabled();
         $pageTitle = 'My Ads Viewed';
 
-        $ads       = PtcView::with(['user','ptc'])->where(['user_id'=> auth()->id(),'ptc_id'=>$id])->orderBy('id', 'desc')->paginate(getPaginate());
+        $ads       = PtcView::with(['user','ptc'])->where(['ptc_id'=>$id])->orderBy('id', 'desc')->paginate(getPaginate());
 
         return view($this->activeTemplate . 'user.ptc.adsViewed', compact('ads', 'pageTitle'));
     }
