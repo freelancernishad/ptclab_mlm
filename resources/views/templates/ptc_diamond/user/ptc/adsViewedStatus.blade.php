@@ -67,7 +67,20 @@
                         @foreach (json_decode($ptc->files) as $file)
                             <div class="form-group" title="Click to Zoom This Image" onclick="zoomImage('{{ getImage(getFilePath('ptcView').'/'.$file) }}')">
                                 <label for="">Proof 1</label>
+
+                                @php
+                                    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+
+                                @endphp
+
+                                @if($ext=='.mp4')
+                                <video src="{{ getImage(getFilePath('ptcView').'/'.$file) }}" class="w-100"></video>
+                                @else
                                 <img src="{{ getImage(getFilePath('ptcView').'/'.$file) }}" class="w-100">
+                                @endif
+
+
 
                             </div>
                         @endforeach
