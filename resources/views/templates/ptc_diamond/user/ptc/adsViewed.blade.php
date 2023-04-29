@@ -22,10 +22,12 @@
                 <td>{{ $ptc->user->username }}</td>
                 <td>
                     @if ($ptc->status=='pending')
-                        <span class="btn btn-warning">Pending</span>
-                    @else
-                        <span class="btn btn-success">Completed</span>
-                    @endif
+                    <span class="btn btn-warning">Pending</span>
+                @elseif ($ptc->status=='Rejected')
+                    <span class="btn btn-danger">Rejected</span>
+                @else
+                    <span class="btn btn-success">Completed</span>
+                @endif
                 </td>
 
 
