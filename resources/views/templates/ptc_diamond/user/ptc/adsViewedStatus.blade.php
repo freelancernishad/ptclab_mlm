@@ -131,7 +131,7 @@
                 @csrf
                 <div class="mb-3">
                   <label for="message-text" class="col-form-label">Reason:</label>
-                  <textarea class="form-control" name="rejectReason" id="message-text"></textarea>
+                  <textarea class="form-control" name="rejectReason" id="message-text" required></textarea>
                 </div>
                 <input type="hidden" name="status" value="Reject">
 
