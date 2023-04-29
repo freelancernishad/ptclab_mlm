@@ -49,7 +49,13 @@
                                 <td data-label="@lang('Status')">
                                     @php echo $ptc->statusBadge @endphp
                                 </td>
-                                <td data-label="@lang('Action')"><a class="btn btn-outline--primary btn-sm" href="{{route('admin.ptc.edit',$ptc->id)}}"><i class="la la-pen"></i> @lang('Edit')</a></td>
+                                <td data-label="@lang('Action')">
+
+                                    <a class="btn btn--success btn-sm" href="{{route('admin.ptc.viewed',$ptc->id)}}">Viewed</a>
+
+                                    <a class="btn btn-outline--primary btn-sm" href="{{route('admin.ptc.edit',$ptc->id)}}"><i class="la la-pen"></i> @lang('Edit')</a>
+
+                                </td>
                             </tr>
                             @empty
                             <tr>

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Ptc;
+use App\Models\PtcView;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ManagePtcController extends Controller
 {
@@ -61,6 +62,78 @@ class ManagePtcController extends Controller
         $ads_settings = gs()->ads_setting->adsData;
         return view('admin.ptc.create', compact('pageTitle','ads_settings'));
     }
+
+
+
+
+    public function adsViewed($id)
+    {
+        // $this->userPostEnabled();
+        $pageTitle = 'My Ads Viewed';
+
+        $ads       = PtcView::with(['user','ptc'])->where(['ptc_id'=>$id])->orderBy('id', 'desc')->paginate(getPaginate());
+
+        return view('admin.ptc.adsViewed', compact('ads', 'pageTitle'));
+    }
+
+    public function adsViewedStatus($id)
+    {
+        // $this->userPostEnabled();
+        $pageTitle = 'My Ads Viewed';
+
+        $ptc       = PtcView::with(['user','ptc'])->find($id);
+
+        return view('admin.ptc.adsViewedStatus', compact('ptc', 'pageTitle'));
+    }
+
+    public function confirmStatus(Request $request,$id)
+    {
+        $status = $request->status;
+
+
+         $ptc_view = PtcView::with(['ptc','user'])->find($id);
+
+
+
+
+
+        if($status=='Approve'){
+
+            if($ptc_view->ptc->IfrOr=='Task ads'){
+            }else{
+                $ptc_view->user->balance += $ptc_view->ptc->amount;
+                $ptc_view->user->save();
+            }
+
+            if($ptc_view->ptc->IfrOr=='Task ads'){
+            }else{
+                $trx                       = getTrx();
+                levelCommission($ptc_view->user, $ptc_view->ptc->amount, 'ptc_view_commission', $trx);
+            }
+
+            $ptc_view->update(['status'=>'Approved']);
+            $notify[] = ['success', 'Successfully Approved this ads'];
+            return redirect()->route('admin.ptc.viewed',$ptc_view->ptc->id)->withNotify($notify);
+            
+        }else{
+
+            $rejectReason = $request->rejectReason;
+            if($rejectReason){
+                $ptc_view->update(['rejectReason'=>$rejectReason,'status'=>'Rejected']);
+            }else{
+
+                $ptc_view->update(['status'=>'Rejected']);
+            }
+
+
+            $notify[] = ['success', 'Successfully Rejected this ads'];
+            return redirect()->route('admin.ptc.viewed',$ptc_view->ptc->id)->withNotify($notify);
+        }
+    }
+
+
+
+
 
     public function edit(Request $request, $id)
     {

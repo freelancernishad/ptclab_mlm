@@ -466,7 +466,13 @@ class PtcController extends Controller
             $notify[] = ['success', 'Successfully Approved this ads'];
             return redirect()->route('user.ptc.viewed',$ptc_view->ptc->id)->withNotify($notify);
         }else{
-            $ptc_view->update(['status'=>'Rejected']);
+            $rejectReason = $request->rejectReason;
+            if($rejectReason){
+                $ptc_view->update(['rejectReason'=>$rejectReason,'status'=>'Rejected']);
+            }else{
+
+                $ptc_view->update(['status'=>'Rejected']);
+            }
             $notify[] = ['success', 'Successfully Rejected this ads'];
             return redirect()->route('user.ptc.viewed',$ptc_view->ptc->id)->withNotify($notify);
         }

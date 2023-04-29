@@ -38,7 +38,7 @@
 <script src="{{ asset('assets/admin/js/nicEdit.js') }}"></script>
 <script src="{{asset('assets/admin/js/vendor/prism.js')}}"></script>
 <script src="{{asset('assets/admin/js/vendor/select2.min.js')}}"></script>
-<script src="{{asset('assets/admin/js/app.js')}}"></script>
+<script src="{{asset('assets/admin/js/app.js?v=1.0.0')}}"></script>
 <script>
     "use strict";
     bkLib.onDomLoaded(function() {

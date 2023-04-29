@@ -10,7 +10,8 @@ class PtcView extends Model
     use Searchable;
 
     protected $fillable = [
-        'status'
+        'status',
+        'rejectReason',
     ];
 
     public function user()

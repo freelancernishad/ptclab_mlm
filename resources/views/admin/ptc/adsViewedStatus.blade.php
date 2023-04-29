@@ -1,5 +1,5 @@
-@extends($activeTemplate.'layouts.master')
-@section('content')
+@extends('admin.layouts.app')
+@section('panel')
 
 <style>
     .viewedImages{
@@ -88,13 +88,17 @@
                         <br/>
 
                         <div class="form-group" style="display: flex;grid-gap: 14px;">
+
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-ptcid="{{ $ptc->id }}">Reject</button>
 
-                            {{-- <form action="{{ route('user.ptc.confirm.status', $ptc->id ) }}" id="confirm-form" method="post" enctype="multipart/form-data">
+
+                            {{-- <form action="{{ route('admin.ptc.confirm.status', $ptc->id ) }}" id="confirm-form" method="post" enctype="multipart/form-data">
                                     @csrf
-                                <input type="submit" name="status" class="btn btn-danger" value="Reject">
+                                <input type="submit" name="status" class="btn btn-danger text-dark" value="Reject">
                             </form> --}}
-                            <form action="{{ route('user.ptc.confirm.status', $ptc->id ) }}" id="confirm-form" method="post" enctype="multipart/form-data">
+
+
+                            <form action="{{ route('admin.ptc.confirm.status', $ptc->id ) }}" id="confirm-form" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <input type="submit" name="status" class="btn btn-info" value="Approve">
                             </form>
@@ -117,6 +121,7 @@
             <img id="popImg" width="100%" src="" alt="">
         </div>
     </div> --}}
+
 
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -149,6 +154,11 @@
 
 
 
+
+
+
+
+
 <script>
 
 
@@ -161,13 +171,14 @@ exampleModal.addEventListener('show.bs.modal', function (event) {
 
   var formModalId = exampleModal.querySelector('#formModalId');
 
-  let url = "{{ route('user.ptc.confirm.status', ':ptcid' ) }}";
+  let url = "{{ route('admin.ptc.confirm.status', ':ptcid' ) }}";
     url = url.replace(':ptcid', ptcid);
 
 
   formModalId.action=url
 
 })
+
 
 
     function zoomImage(img) {
