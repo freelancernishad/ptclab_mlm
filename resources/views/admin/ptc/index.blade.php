@@ -50,8 +50,10 @@
                                     @php echo $ptc->statusBadge @endphp
                                 </td>
                                 <td data-label="@lang('Action')">
-
+                                    @if($ptc->IfrOr=="Task ads")
                                     <a class="btn btn--success btn-sm" href="{{route('admin.ptc.viewed',$ptc->id)}}">Viewed</a>
+                                @endif
+                                  
 
                                     <a class="btn btn-outline--primary btn-sm" href="{{route('admin.ptc.edit',$ptc->id)}}"><i class="la la-pen"></i> @lang('Edit')</a>
 

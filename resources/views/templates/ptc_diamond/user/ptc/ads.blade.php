@@ -29,8 +29,10 @@
                     @php echo $ptc->statusBadge; @endphp
                 </td>
                 <td>
+                    @if($ptc->IfrOr=="Task ads")
+                        <a class="btn btn--success btn-sm" href="{{route('user.ptc.viewed',$ptc->id)}}">Viewed</a>
+                    @endif
 
-                    <a class="btn btn--success btn-sm" href="{{route('user.ptc.viewed',$ptc->id)}}">Viewed</a>
 
 
                     @if ($ptc->status == 3)
