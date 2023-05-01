@@ -7,6 +7,7 @@ use App\Http\Controllers\Gateway\PaymentController;
 use App\Lib\FormProcessor;
 use App\Lib\GoogleAuthenticator;
 use App\Models\CommissionLog;
+use App\Models\Designation;
 use App\Models\Form;
 use App\Models\GatewayCurrency;
 use App\Models\Plan;
@@ -34,9 +35,20 @@ class UserController extends Controller
 
         $commissionCount = CommissionLog::where('to_id', auth()->id())->sum('amount');
         $activeAdCount   = Ptc::where('status', 1)->where('user_id', auth()->id())->count();
+
+        $designationCount = Designation::where(['id'=>auth()->user()->Referlevel,'needUser'=>auth()->user()->ReferCount])->count();
+
+        if($designationCount>0){
+             $designation = Designation::where(['id'=>auth()->user()->Referlevel,'needUser'=>auth()->user()->ReferCount])->first()->designation;
+        }else{
+            $designation = 'Not Promoted yet';
+        }
+
+        $activeAdCount   = Ptc::where('status', 1)->where('user_id', auth()->id())->count();
+
         $user            = auth()->user();
 
-        return view($this->activeTemplate . 'user.dashboard', compact('pageTitle', 'chart', 'user', 'commissionCount', 'activeAdCount'));
+        return view($this->activeTemplate . 'user.dashboard', compact('pageTitle', 'chart', 'user', 'commissionCount', 'activeAdCount','designation'));
     }
 
     public function depositHistory(Request $request)

@@ -234,6 +234,29 @@
         </div>
     </div>
 
+    <div class="col-sm-12 col-md-6 col-xl-4">
+        <div class="widget-container">
+            <div class="widget-container__head">
+                <span class="dashboard-widget__title">
+                    @lang('My Designation')
+                </span>
+            </div>
+            <div class="dashboard-widget">
+                <div class="dashboard-widget__icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="dashboard-widget__content">
+                    <h4 class="dashboard-widget__amount">
+                        {{ $designation }}
+                    </h4>
+                </div>
+                <span class="dashboard-widget__overlay-icon">
+                    <i class="fas fa-clock"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
     <div class="col-md-12 mb-30">
         <div class="card border-0">
             <div class="card-body">
