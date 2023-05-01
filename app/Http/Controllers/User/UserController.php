@@ -36,10 +36,10 @@ class UserController extends Controller
         $commissionCount = CommissionLog::where('to_id', auth()->id())->sum('amount');
         $activeAdCount   = Ptc::where('status', 1)->where('user_id', auth()->id())->count();
 
-        $designationCount = Designation::where(['id'=>auth()->user()->Referlevel,'needUser'=>auth()->user()->ReferCount])->count();
+        $designationCount = Designation::where('id',auth()->user()->Referlevel)->where('needUser', '<=', intval(auth()->user()->ReferCount))->count();
 
         if($designationCount>0){
-             $designation = Designation::where(['id'=>auth()->user()->Referlevel,'needUser'=>auth()->user()->ReferCount])->first()->designation;
+             $designation = Designation::where('id',auth()->user()->Referlevel)->where('needUser', '<=', intval(auth()->user()->ReferCount))->first()->designation;
         }else{
             $designation = 'Not Promoted yet';
         }
