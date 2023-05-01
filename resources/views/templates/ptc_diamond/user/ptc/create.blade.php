@@ -128,7 +128,7 @@ var price = 0;
         const endpoint = `/api/adsss/component?type=${type}&adtype=${adType}`;
         $.get(endpoint, function(data) {
             // console.log(data)
-            setTimeout(() => {
+            // setTimeout(() => {
 
                 $('#TypeByFrom').html(data);
 
@@ -136,7 +136,7 @@ var price = 0;
 
             document.getElementById('ads_type').addEventListener('change', function() {
 
-            console.log('You selected: ', this.value);
+            // console.log('You selected: ', this.value);
 
             var requestOptions = {
             method: 'GET',
@@ -171,7 +171,7 @@ var price = 0;
 
 
 
-            }, 3000);
+            // }, 3000);
         });
 
 
