@@ -100,7 +100,7 @@
             }else if(IfrOr == 'Task ads'){
                 ads_type('Task ads');
             }else{
-
+                ads_type('');
             }
         });
 
