@@ -133,7 +133,7 @@ $.get(endpoint, function(data) {
     redirect: 'follow'
     };
 
-    fetch(`/api/ads/get/prices/${this.value}`, requestOptions)
+    fetch(`/api/adss/get/prices/${this.value}`, requestOptions)
     .then(response => response.json())
     .then(result => {
         price = result.ad_price

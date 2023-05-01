@@ -27,7 +27,7 @@ Route::namespace('Api')->name('api.')->group(function () {
     });
 
 
-    Route::get('/ads/get/prices/{id}', function (Request $request,$id) {
+    Route::get('/adss/get/prices/{id}', function (Request $request,$id) {
 
         $id = strval($id);
 
@@ -46,5 +46,7 @@ Route::namespace('Api')->name('api.')->group(function () {
 
         // return view('components.ads-create', ['adssettings' => $ads_settings,'type' => $request->type,'adtype' => $request->adtype,])->render();
     });
+
+
 
 });
