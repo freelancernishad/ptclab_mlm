@@ -62,23 +62,6 @@
                 </div>
 
 
-                <div class="form-group col-md-12">
-                    <label class="form-label">@lang('Prove Files')</label>
-                    <select class="select2-multi-select form-control" name="filesSupports[]" multiple>
-                        <option value="jpg">JPG</option>
-                        <option value="jpeg">JPEG</option>
-                        <option value="png">PNG</option>
-                        <option value="mp4">MP4</option>
-                        <option value="pdf">PDF</option>
-                        <option value="doc">DOC</option>
-                        <option value="docx">DOCX</option>
-                        <option value="txt">TXT</option>
-                        <option value="xlx">XLX</option>
-                        <option value="xlsx">XLSX</option>
-                        <option value="csv">CSV</option>
-                    </select>
-
-                </div>
 
 
 
@@ -97,7 +80,7 @@
 <script src="{{asset('assets/admin/js/vendor/select2.min.js')}}"></script>
 <script src="https://cdn.tiny.cloud/1/nhnny39zzu3w0euy077ojdf9gk1n3mjpkobk25i228rt3qkz/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-$('.select2-multi-select').select2();
+
 
 var price = 0;
 
