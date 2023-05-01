@@ -115,7 +115,7 @@
     function ads_type(type='iframe',adType=1) {
 
 var price = 0
-const endpoint = `/api/ads/component?type=${type}&adtype=${adType}`;
+const endpoint = `/api/adsss/component?type=${type}&adtype=${adType}`;
 $.get(endpoint, function(data) {
     // console.log(data)
     setTimeout(() => {

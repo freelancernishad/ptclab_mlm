@@ -19,7 +19,7 @@ Route::namespace('Api')->name('api.')->group(function () {
 
 
 
-    Route::get('/ads/component', function (Request $request) {
+    Route::get('/adsss/component', function (Request $request) {
 
         $ads_settings = gs()->ads_setting->adsData;
 
