@@ -1,5 +1,6 @@
 @extends($activeTemplate.'layouts.master')
 @section('content')
+<link rel="stylesheet" href="{{asset('assets/admin/css/vendor/select2.min.css')}}">
 <div class="text-end mb-3">
 <a href="{{ route('user.ptc.ads') }}" class="btn btn--base btn-sm">@lang('My Advertisements')</a>
 </div>
@@ -105,8 +106,9 @@
         </div>
     </form>
 </div>
-
-
+@endsection
+@push('script')
+<script src="{{asset('assets/admin/js/vendor/select2.min.js')}}"></script>
 <script src="https://cdn.tiny.cloud/1/nhnny39zzu3w0euy077ojdf9gk1n3mjpkobk25i228rt3qkz/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 $('.select2-multi-select').select2();
@@ -118,5 +120,5 @@ $('.select2-multi-select').select2();
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
         });
 </script>
+@endpush
 
-@endsection
