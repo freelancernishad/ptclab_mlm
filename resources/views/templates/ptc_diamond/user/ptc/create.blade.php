@@ -21,8 +21,8 @@
                     <div class="form--select">
                         <select name="IfrOr" id="IfrOr" class="form-control" required>
                             <option value="">Select</option>
-                            <option>Iframe</option>
-                            <option>Task ads</option>
+                            <option value="iframe">Iframe</option>
+                            <option value="Task ads">Task ads</option>
                         </select>
                     </div>
 
@@ -89,7 +89,7 @@ var price = 0;
 
         $('#IfrOr').change(function(){
             var IfrOr = $(this).val();
-            if (IfrOr == 'Iframe') {
+            if (IfrOr == 'iframe') {
                 ads_type('iframe');
             }else if(IfrOr == 'Task ads'){
                 ads_type('Task ads');
