@@ -42,7 +42,7 @@
 
 
 
-                            <div class="col-md-3 adscolums">
+                            <div class="col-md-3 adscolums" id="adsCard{{ $ads_setting->id }}">
                                 <x-ads-settings :adssetting="$ads_setting" />
                             </div>
                         @endforeach
@@ -217,7 +217,15 @@
 </div>
 @endsection
 @push('script')
-    <script>
+
+
+<script>
+    function removethisItem(id){
+        var element = document.getElementById(id);
+        element.remove();
+    }
+
+
     (function($){
     "use strict"
         $('[name=user_ads_post]').on('change', function () {
@@ -242,6 +250,7 @@ const count = elements.length;
   const newDiv = document.createElement("div");
   newDiv.classList.add("col-md-3");
   newDiv.classList.add("adscolums");
+  newDiv.id = `adsCard${count}`;
   newDiv.innerHTML = `
 
       @php

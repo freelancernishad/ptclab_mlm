@@ -1,7 +1,7 @@
 
-<div class="card mb-4">
+<div class="card mb-4"  >
     <div class="card-header bg--primary d-flex justify-content-between">
-        <h5 class="text-white">{{ $adssetting->adsName }}</h5>
+        <h5 class="text-white d-flex justify-content-between w-100">{{ $adssetting->adsName }} <span style="cursor: pointer;padding: 0 5px;color: red;" onclick="removethisItem('adsCard{{ $adssetting->id }}')">X</span></h5>
 
     </div>
     <div class="card-body">

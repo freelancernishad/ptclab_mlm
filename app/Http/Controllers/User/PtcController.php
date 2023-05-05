@@ -99,20 +99,46 @@ class PtcController extends Controller
 
         $user = auth()->user();
         $id = $this->checkEligibleAd($hash, $user);
-        $ptc = Ptc::where('id', $id)->where('remain', '>', 0)->where('status', 1)->firstOrFail();
+         $ptc = Ptc::where('id', $id)->where('remain', '>', 0)->where('status', 1)->firstOrFail();
 
         if($ptc->IfrOr=='Task ads'){
+
+            $filesSupports = json_decode($ptc->filesSupports);
+            $fileTypes = "";
+
+
+            foreach ($filesSupports as $key =>$fileType) {
+
+                if ($key === (count($filesSupports) - 1)) {
+                    $fileTypes .=$fileType;
+                }else{
+
+                    $fileTypes .=$fileType.',';
+                }
+            }
+        //   return $fileTypes;
+
+            $request->validate([
+                'file.*' => "mimes:$fileTypes",
+            ]);
+
             $file = $request->file;
             $filesCount = count($file);
             $files = [];
+
+
+
             for ($i=0; $i < $filesCount; $i++) {
                 if ($file[$i]) {
+
                     $directory     = date("Y") . "/" . date("m") . "/" . date("d");
                     $path          = getFilePath('ptcView') . '/' . $directory;
                     $filename      = $directory . '/' . fileUploader($file[$i], $path);
                     array_push($files,$filename);
                 }
             }
+
+
         }else{
             $request->validate([
                 'first_number'  => 'required|integer',
@@ -278,6 +304,9 @@ class PtcController extends Controller
     public function store(Request $request)
     {
 
+        // return $request->all();
+
+
         $this->userPostEnabled();
         $IfrOr =  $request->IfrOr;
         if($IfrOr=='iframe'){
@@ -409,7 +438,7 @@ class PtcController extends Controller
         $globalRules = [
             'title'    => 'required',
             'duration' => 'required|integer|min:1',
-            'ads_type' => 'required|integer|in:1,2,3,4',
+            'ads_type' => 'required|integer|in:1,2,3,4,5',
         ];
         $rules = array_merge($globalRules, $rules);
         $request->validate($rules);
