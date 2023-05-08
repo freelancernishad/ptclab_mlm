@@ -87,6 +87,8 @@
                         <br/>
                         <br/>
 
+                        @if($ptc->status=='pending')
+
                         <div class="form-group" style="display: flex;grid-gap: 14px;">
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-ptcid="{{ $ptc->id }}">Reject</button>
 
@@ -99,6 +101,8 @@
                                 <input type="submit" name="status" class="btn btn-info" value="Approve">
                             </form>
                         </div>
+
+                        @endif
 
 
 

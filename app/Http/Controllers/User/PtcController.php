@@ -476,25 +476,39 @@ class PtcController extends Controller
          $ptc_view = PtcView::with(['ptc','user'])->find($id);
 
 
-        if($ptc_view->ptc->IfrOr=='Task ads'){
-        }else{
-            $ptc_view->user->balance += $ptc_view->ptc->amount;
-            $ptc_view->user->save();
-        }
-
-        if($ptc_view->ptc->IfrOr=='Task ads'){
-        }else{
-            $trx                       = getTrx();
-            levelCommission($ptc_view->user, $ptc_view->ptc->amount, 'ptc_view_commission', $trx);
-        }
 
 
+         if($status=='Approve'){
 
-        if($status=='Approve'){
+            if($ptc_view->ptc->IfrOr=='Task ads'){
+
+                $ptc_view->user->balance += $ptc_view->ptc->amount;
+                $ptc_view->user->save();
+
+                if($ptc_view->status=='Rejected'){
+
+                    $ptc_view->ptc->showed +=1;
+                    $ptc_view->ptc->remain -=1;
+                    $ptc_view->ptc->save();
+                }
+
+
+
+            }
+
+            if($ptc_view->ptc->IfrOr=='Task ads'){
+
+                $trx                       = getTrx();
+                levelCommission($ptc_view->user, $ptc_view->ptc->amount, 'ptc_view_commission', $trx);
+            }
+
             $ptc_view->update(['status'=>'Approved']);
             $notify[] = ['success', 'Successfully Approved this ads'];
             return redirect()->route('user.ptc.viewed',$ptc_view->ptc->id)->withNotify($notify);
+
         }else{
+
+
             $rejectReason = $request->rejectReason;
             if($rejectReason){
                 $ptc_view->update(['rejectReason'=>$rejectReason,'status'=>'Rejected']);
@@ -502,6 +516,11 @@ class PtcController extends Controller
 
                 $ptc_view->update(['status'=>'Rejected']);
             }
+            $ptc_view->ptc->showed -=1;
+            $ptc_view->ptc->remain +=1;
+            $ptc_view->ptc->save();
+
+
             $notify[] = ['success', 'Successfully Rejected this ads'];
             return redirect()->route('user.ptc.viewed',$ptc_view->ptc->id)->withNotify($notify);
         }
