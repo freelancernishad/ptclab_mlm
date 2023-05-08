@@ -1,11 +1,13 @@
 
 @if($type == "Task ads")
+<input type="hidden" name="ads_type" id="Getads_types" >
 
     <div class="form-group col-md-12">
         <label for="ads_type">@lang('Advertisement Type')</label>
-        <select class="form-control" id="ads_type" name="ads_type" required>
+        <select class="form-control" id="ads_type" name="ads_types" required>
+            <option value="">Select</option>
             @foreach ($adssettings as $ads_setting)
-            <option value="{{ $ads_setting->id }}" {{ old('ads_type')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
+            <option value="{{ $ads_setting->id }}" {{ old('ads_types')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
             @endforeach
 
         </select>
@@ -40,6 +42,18 @@
 
 
     <script>
+
+function ads_typeChange(ads_type,result){
+
+    var price = result.ad_price;
+
+    document.getElementById('Getads_types').value=ads_type
+
+    $('.price-per-ad').text(price);
+        $('[name=max_show]').trigger('input');
+}
+
+
         $('.select2-multi-select').select2();
         tinymce.init({
             selector: 'textarea.tinymce-editor',
@@ -57,12 +71,13 @@
     @elseif($type == "iframe")
 
 
+    <input type="hidden" name="ads_type" id="Getads_types" >
     <div class="form-group col-md-4">
         <label for="ads_type">@lang('Advertisement Type')</label>
-        <select class="form-control" id="ads_type" name="ads_type"   required>
+        <select class="form-control" id="ads_type" name="ads_types"    required>
             <option value="">Select</option>
             @foreach ($adssettings as $ads_setting)
-            <option value="{{ $ads_setting->id }}" {{ old('ads_type')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
+            <option value="{{ $ads_setting->id }}" {{ old('ads_types')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
             @endforeach
 
 
@@ -87,6 +102,7 @@
 
         var price = result.ad_price;
 
+        document.getElementById('Getads_types').value=ads_type
         if(ads_type==1){
 
             var html = `

@@ -89,7 +89,10 @@
 
                         <div class="form-group" style="display: flex;grid-gap: 14px;">
 
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-ptcid="{{ $ptc->id }}">Reject</button>
+                            @if($ptc->status=='pending' || $ptc->status=='Approved')
+
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-ptcid="{{ $ptc->id }}">Reject</button>
+                            @endif
 
 
                             {{-- <form action="{{ route('admin.ptc.confirm.status', $ptc->id ) }}" id="confirm-form" method="post" enctype="multipart/form-data">
@@ -97,11 +100,12 @@
                                 <input type="submit" name="status" class="btn btn-danger text-dark" value="Reject">
                             </form> --}}
 
-
+                            @if($ptc->status=='pending' || $ptc->status=='Rejected')
                             <form action="{{ route('admin.ptc.confirm.status', $ptc->id ) }}" id="confirm-form" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <input type="submit" name="status" class="btn btn-info" value="Approve">
                             </form>
+                            @endif
                         </div>
 
 

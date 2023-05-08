@@ -139,6 +139,8 @@ $.get(endpoint, function(data) {
         price = result.ad_price
 
     ads_typeChange(result.uploaded,result);
+
+    
     })
     .catch(error => console.log('error', error));
 
