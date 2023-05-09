@@ -116,7 +116,7 @@ class ManagePtcController extends Controller
             }
 
             if($ptc_view->ptc->IfrOr=='Task ads'){
-   
+
                 $trx                       = getTrx();
                 levelCommission($ptc_view->user, $ptc_view->ptc->amount, 'ptc_view_commission', $trx);
             }
@@ -154,6 +154,16 @@ class ManagePtcController extends Controller
         $pageTitle = 'Edit Advertisement';
         $ptc = Ptc::findOrFail($id);
         return view('admin.ptc.edit', compact('pageTitle', 'ptc'));
+    }
+
+    public function delete(Request $request, $id)
+    {
+
+        $ptc = Ptc::findOrFail($id);
+        $ptc->delete();
+        $notify[] = ['success', 'Successfully Deleted this ads'];
+        return redirect()->back()->withNotify($notify);
+
     }
 
     public function store(Request $request)

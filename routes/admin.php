@@ -166,6 +166,7 @@ Route::middleware('admin')->group(function () {
         Route::get('create', 'create')->name('create');
         Route::post('store', 'store')->name('store');
         Route::get('edit/{id}', 'edit')->name('edit');
+        Route::get('delete/{id}', 'delete')->name('delete');
 
         Route::get('my-ads/viewed/{id}', 'adsViewed')->name('viewed');
         Route::get('my-ads/viewed/status/{id}', 'adsViewedStatus')->name('viewed.status');
