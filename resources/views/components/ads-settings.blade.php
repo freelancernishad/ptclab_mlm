@@ -40,8 +40,8 @@
             <div class="input-group">
                 <select name="IfOr[]" class="form-control" required>
                     <option value="">Select</option>
-                    <option value="iframe">Iframe</option>
-                    <option value="Task ads">Task ads</option>
+                    <option value="iframe" @php if($adssetting->IfOr=='iframe')echo'selected'; @endphp>Iframe</option>
+                    <option value="Task ads" @php if($adssetting->IfOr=='Task ads')echo'selected'; @endphp>Task ads</option>
                 </select>
             </div>
         </div>
