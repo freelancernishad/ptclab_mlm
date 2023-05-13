@@ -298,7 +298,8 @@ class PtcController extends Controller
     {
         $this->userPostEnabled();
         $pageTitle = 'Create Ads';
-        return view($this->activeTemplate . 'user.ptc.create', compact('pageTitle'));
+        $ads_settings = gs()->ads_setting->adsData;
+        return view($this->activeTemplate . 'user.ptc.create', compact('pageTitle','ads_settings'));
     }
 
     public function store(Request $request)

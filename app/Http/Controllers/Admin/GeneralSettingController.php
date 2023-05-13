@@ -229,7 +229,7 @@ class GeneralSettingController extends Controller
                 'ad_price'=>$request->ad_price[$i],
                 'amount_for_user'=>$request->amount_for_user[$i],
                 'uploaded'=>$request->uploaded[$i],
-                // 'IfOr'=>$request->IfOr[$i],
+                'IfOr'=>$request->IfOr[$i],
             ]);
         }
 

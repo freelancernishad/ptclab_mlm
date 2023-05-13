@@ -10,23 +10,28 @@
     <div class="card-body">
         <form role="form" method="POST" action="{{ route("user.ptc.store") }}" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="IfrOr" class="IfrOrInput">
             <div class="row">
                 <div class="form-group col-md-12">
                     <label class="form-label">@lang('Title of the Ad')</label>
                     <input type="text" name="title" class="form-control form--control form-control form--control-lg" value="{{ old('title') }}" required>
                 </div>
 
+                <input type="hidden" name="ads_type" class="Getads_types" >
                 <div class="form-group col-md-4">
-                    <label for="ads_type" class="form-label">@lang('Advertisement Type')</label>
-                    <div class="form--select">
-                        <select name="IfrOr" id="IfrOr" class="form-control" required>
-                            <option value="">Select</option>
-                            <option value="iframe">Iframe</option>
-                            <option value="Task ads">Task ads</option>
-                        </select>
-                    </div>
+                    <label for="ads_type">@lang('Advertisement Type')</label>
+                    <select class="form-control" id="ads_type" name="ads_types"    required>
+                        <option value="">Select</option>
+                        @foreach ($ads_settings as $ads_setting)
+                        <option value="{{ $ads_setting->id }}" {{ old('ads_types')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
+                        @endforeach
 
+
+                    </select>
+                    <pre class="text--danger">@lang('Price per ad') <span class="price-per-ad"></span> {{ $general->cur_text }}</pre>
                 </div>
+
+
 
 
 
@@ -72,6 +77,9 @@
         </form>
     </div>
 </div>
+
+
+
 @endsection
 
 
@@ -84,69 +92,111 @@
 
 var price = 0;
 
-(function($){
-        "use strict";
 
-        $('#IfrOr').change(function(){
-            var IfrOr = $(this).val();
-            if (IfrOr == 'iframe') {
-                ads_type('iframe');
-            }else if(IfrOr == 'Task ads'){
-                ads_type('Task ads');
-            }else{
-                ads_type('');
+
+
+document.getElementById('ads_type').addEventListener('change', function() {
+
+// console.log('You selected: ', this.value);
+
+var requestOptions = {
+method: 'GET',
+redirect: 'follow'
+};
+
+fetch(`/api/adss/get/prices/${this.value}`, requestOptions)
+.then(response => response.json())
+.then(result => {
+
+    console.log($('.IfrOrInput').val(result.IfOr));
+    console.log($('.Getads_types').val(result.uploaded));
+
+    price = result.ad_price
+
+ads_typeChange(result.uploaded,result);
+
+
+
+
+
+})
+.catch(error => console.log('error', error));
+
+
+});
+
+
+function ads_typeChange(ads_type,result){
+
+
+var price = result.ad_price;
+
+
+
+
+
+
+
+if(result.IfOr=='iframe'){
+
+            if(ads_type==1){
+                var html = `
+                <label>@lang('Link')</label>
+                <input type="text" name="website_link" class="form-control" value="{{ old('website_link') }}" placeholder="@lang('http://example.com')">
+                `;
+
+                $('#TypeByFrom').html(html);
+
+
+
+            }else if(ads_type==2){
+
+                var html = `
+                <label>@lang('Banner')</label>
+                <input type="file" class="form-control"  name="banner_image">
+                `;
+                $('#TypeByFrom').html(html);
+
+            }else if(ads_type==3){
+
+                var html = `
+                <label>@lang('Script')</label>
+                <textarea  name="script" class="form-control">{{ old('script') }}</textarea>
+                `;
+                $('#TypeByFrom').html(html);
+
+            }else if(ads_type==4){
+
+                var html = `
+                <label>@lang('Youtube Embeded Link')</label>
+                <input type="text" name="youtube" class="form-control" value="{{ old('youtube') }}" placeholder="@lang('https://www.youtube.com/embed/your_code')">
+                `;
+                $('#TypeByFrom').html(html);
+
             }
-        });
 
 
+    }else{
 
-    })(jQuery);
-
-
-
-
-    function ads_type(type='iframe',adType=1) {
-
-        var price = 0
-        const endpoint = `/api/adsss/component?type=${type}&adtype=${adType}`;
+        const endpoint = `/api/adsss/component?type=${result.IfOr}&adtype=1`;
         $.get(endpoint, function(data) {
-            // console.log(data)
-            // setTimeout(() => {
+        $('#TypeByFrom').html(data);
+        })
 
-                $('#TypeByFrom').html(data);
-
-
-
-            document.getElementById('ads_type').addEventListener('change', function() {
-
-            // console.log('You selected: ', this.value);
-
-            var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-            };
-
-            fetch(`/api/adss/get/prices/${this.value}`, requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                price = result.ad_price
-
-            ads_typeChange(result.uploaded,result);
-            })
-            .catch(error => console.log('error', error));
-
-
-            });
+    }
 
 
 
 
+$('.price-per-ad').text(price);
+$('[name=max_show]').trigger('input');
 
-            $('.price-per-ad').text(price);
-            $('[name=max_show]').trigger('input');
+};
 
 
-            $('[name=max_show]').on('input', function () {
+
+
+$('[name=max_show]').on('input', function () {
             var maxShow = $(this).val();
             var totalPrice = price * maxShow;
             $('.total-price').text(totalPrice);
@@ -154,63 +204,11 @@ var price = 0;
 
 
 
-            // }, 3000);
-        });
-
-
-    }
 
 
 
 
 
 
-
-
-
-    (function($){
-        "use strict";
-
-        $('#ads_type').change(function(){
-            var adType = $(this).val();
-            if (adType == 1) {
-                $("#websiteLink").removeClass('d-none');
-                $("#bannerImage").addClass('d-none');
-                $("#script").addClass('d-none');
-                $("#youtube").addClass('d-none');
-                price = {{ @$general->ads_setting->ad_price->url }}
-            } else if (adType == 2) {
-                $("#bannerImage").removeClass('d-none');
-                $("#websiteLink").addClass('d-none');
-                $("#script").addClass('d-none');
-                $("#youtube").addClass('d-none');
-                price = {{ @$general->ads_setting->ad_price->image }}
-            } else if(adType == 3) {
-                $("#bannerImage").addClass('d-none');
-                $("#websiteLink").addClass('d-none');
-                $("#script").removeClass('d-none');
-                $("#youtube").addClass('d-none');
-                price = {{ @$general->ads_setting->ad_price->script }}
-            } else if(adType == 5) {
-                $("#bannerImage").addClass('d-none');
-                $("#websiteLink").addClass('d-none');
-                $("#script").addClass('d-none');
-                $("#youtube").addClass('d-none');
-                $("#Facebook").removeClass('d-none');
-                price = {{ @$general->ads_setting->ad_price->Facebook }}
-            } else {
-                $("#bannerImage").addClass('d-none');
-                $("#websiteLink").addClass('d-none');
-                $("#script").addClass('d-none');
-                $("#youtube").removeClass('d-none');
-                price = {{ @$general->ads_setting->ad_price->youtube ?? 0}}
-            }
-            $('.price-per-ad').text(price);
-            $('[name=max_show]').trigger('input');
-        }).change();
-
-
-
-    })(jQuery);
 </script>
 @endpush

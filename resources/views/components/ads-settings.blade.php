@@ -34,17 +34,17 @@
                 </select>
             </div>
         </div>
-{{--
+
         <div class="form-group">
             <label>Iframe/Task ads</label>
             <div class="input-group">
-                <select name="IfOr[]" class="form-control" value="{{ $adssetting->IfOr }}" required>
+                <select name="IfOr[]" class="form-control" required>
                     <option value="">Select</option>
-                    <option @php if($adssetting->IfOr=='Iframe')echo'selected'; @endphp>Iframe</option>
-                    <option @php if($adssetting->IfOr=='Task ads')echo'selected'; @endphp>Task ads</option>
+                    <option value="iframe" @php if($adssetting->IfOr=='iframe')echo'selected'; @endphp>Iframe</option>
+                    <option value="Task ads" @php if($adssetting->IfOr=='Task ads')echo'selected'; @endphp>Task ads</option>
                 </select>
             </div>
-        </div> --}}
+        </div>
         <div class="form-group">
             <label>@lang('Ads Price')</label>
             <div class="input-group">

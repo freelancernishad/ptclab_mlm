@@ -6,6 +6,7 @@
             <div class="card-body">
                 <form role="form" method="POST" action="{{ route("admin.ptc.store") }}" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="IfrOr" id="IfrOrInput">
                     <div class="row">
                        <div class="form-group col-md-8">
                             <label>@lang('Title of the Ad')</label>
@@ -46,17 +47,30 @@
 
 
                     <div class="row pt-5 mt-5 border-top">
-                        <div class="form-group col-md-4">
-                        <label>Iframe/Task ads</label>
-                        <div class="input-group">
-                            <select name="IfrOr" id="IfrOr" class="form-control" required>
-                                <option value="">Select</option>
-                                <option value="iframe">Iframe</option>
-                                <option value="Task ads">Task ads</option>
-                            </select>
-                        </div>
+                    <input type="hidden" name="ads_type" id="Getads_types" >
+                    <div class="form-group col-md-4">
+                        <label for="ads_type">@lang('Advertisement Type')</label>
+                        <select class="form-control" id="ads_type" name="ads_types"    required>
+                            <option value="">Select</option>
+                            @foreach ($ads_settings as $ads_setting)
+                            <option value="{{ $ads_setting->id }}" {{ old('ads_types')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
+                            @endforeach
+
+
+                        </select>
+                        <pre class="text--danger">@lang('Price per ad') <span class="price-per-ad"></span> {{ $general->cur_text }}</pre>
                     </div>
+
+
+
+
+
                     </div>
+
+
+
+
+
 
                     <div class="row pt-5 mt-5 border-top" id="TypeByFrom"></div>
 
@@ -140,7 +154,7 @@ $.get(endpoint, function(data) {
 
     ads_typeChange(result.uploaded,result);
 
-    
+
     })
     .catch(error => console.log('error', error));
 
@@ -169,6 +183,101 @@ $.get(endpoint, function(data) {
 
 }
 
+
+
+
+
+
+
+
+
+
+document.getElementById('ads_type').addEventListener('change', function() {
+
+// console.log('You selected: ', this.value);
+
+var requestOptions = {
+method: 'GET',
+redirect: 'follow'
+};
+
+fetch(`/api/adss/get/prices/${this.value}`, requestOptions)
+.then(response => response.json())
+.then(result => {
+    price = result.ad_price
+
+ads_typeChange(result.uploaded,result);
+
+
+
+
+
+})
+.catch(error => console.log('error', error));
+
+
+});
+
+
+function ads_typeChange(ads_type,result){
+    console.log(ads_type);
+
+var price = result.ad_price;
+
+document.getElementById('Getads_types').value=ads_type
+document.getElementById('IfrOrInput').value=result.IfOr
+
+if(result.IfOr=='iframe'){
+
+
+if(ads_type==1){
+
+    var html = `
+    <label>@lang('Link')</label>
+    <input type="text" name="website_link" class="form-control" value="{{ old('website_link') }}" placeholder="@lang('http://example.com')">
+    `;
+    $('#TypeByFrom').html(html);
+
+}else if(ads_type==2){
+
+    var html = `
+    <label>@lang('Banner')</label>
+    <input type="file" class="form-control"  name="banner_image">
+    `;
+    $('#TypeByFrom').html(html);
+
+}else if(ads_type==3){
+
+    var html = `
+    <label>@lang('Script')</label>
+    <textarea  name="script" class="form-control">{{ old('script') }}</textarea>
+    `;
+    $('#TypeByFrom').html(html);
+
+}else if(ads_type==4){
+
+    var html = `
+    <label>@lang('Youtube Embeded Link')</label>
+    <input type="text" name="youtube" class="form-control" value="{{ old('youtube') }}" placeholder="@lang('https://www.youtube.com/embed/your_code')">
+    `;
+    $('#TypeByFrom').html(html);
+
+}
+
+
+}else{
+
+const endpoint = `/api/adsss/component?type=${result.IfOr}&adtype=1`;
+$.get(endpoint, function(data) {
+$('#TypeByFrom').html(data);
+})
+
+}
+
+
+$('.price-per-ad').text(price);
+$('[name=max_show]').trigger('input');
+};
 
 
 </script>
