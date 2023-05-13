@@ -75,6 +75,7 @@ class RegisterController extends Controller
         $validate = Validator::make($data, [
             'email' => 'required|string|email|unique:users',
             'mobile' => 'required|regex:/^([0-9]*)$/',
+            'image' => 'nullable|mimes:jpeg,jpg,png,gif',
             'password' => ['required','confirmed',$passwordValidation],
             'username' => 'required|unique:users|min:6',
             'captcha' => 'sometimes|required',

@@ -21,6 +21,7 @@ class ProfileController extends Controller
         $request->validate([
             'firstname' => 'required|string',
             'lastname' => 'required|string',
+            'image' => 'nullable|mimes:jpeg,jpg,png,gif',
         ],[
             'firstname.required'=>'First name field is required',
             'lastname.required'=>'Last name field is required'
