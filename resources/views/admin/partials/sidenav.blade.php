@@ -40,7 +40,7 @@
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{ menuActive('admin.ptc*', 3) }}">
                         <i class="menu-icon las la-ad"></i>
-                        <span class="menu-title">@lang('PTC Ads')</span>
+                        <span class="menu-title">@lang('Ads board')</span>
                         @if ($pendingPtcCount > 0)
                             <span class="menu-badge pill bg--danger ms-auto">
                                 <i class="fa fa-exclamation"></i>

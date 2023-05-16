@@ -36,7 +36,12 @@
                                     @endif
                                 </td>
                                 <td data-label="@lang('Type')">
-                                    @php echo $ptc->typeBadge @endphp
+                                    @if($ptc->IfrOr=="Task ads")
+                                    <span class="badge badge--primary"><i class="fa fa-code"></i>Task ads</span>
+                                    @else
+                                    <span class="badge badge--success"><i class="fa fa-code"></i>Iframe</span>
+                                    @endif
+                                    {{-- @php echo $ptc->typeBadge @endphp --}}
                                 </td>
                                 <td data-label="@lang('Duration')">{{$ptc->duration}} @lang('Sec')</td>
                                 <td data-label="@lang('Maximum View')">{{$ptc->max_show}}</td>
