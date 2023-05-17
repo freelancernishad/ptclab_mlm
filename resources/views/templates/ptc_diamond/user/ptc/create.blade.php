@@ -35,7 +35,7 @@
 
                 <div class="form-group col-md-4">
                     <label for="ads_type">@lang('Advertisement Type')</label>
-                    <select class="form-control" id="ads_type" name="ads_types"    required>
+                    <select class="form-control" id="ads_types" class="ads_type" name="ads_types"    required>
                         <option value="">Select</option>
 
 
@@ -92,7 +92,6 @@
 </div>
 
 
-
 @endsection
 
 
@@ -103,8 +102,12 @@
 <script>
 
 
-var ads_settings = <?php echo json_encode($ads_settings); ?>;
-        function adsPackage(params){
+
+
+
+function adsPackage(params){
+        var ads_settings = <?php echo json_encode($ads_settings); ?>;
+
         var filteredArray = ads_settings.filter((element)=> {
             return element.IfOr ==params;
         });
@@ -112,12 +115,10 @@ var ads_settings = <?php echo json_encode($ads_settings); ?>;
             filteredArray.forEach(el => {
                  optionhtml +=`<option value="${ el.id }">${ el.adsName }</option>`;
             });
-            document.getElementById('ads_type').innerHTML=optionhtml
+
+            document.getElementById('ads_types').innerHTML=optionhtml
+
         }
-
-
-
-
 
 
 
@@ -126,7 +127,7 @@ var price = 0;
 
 
 
-document.getElementById('ads_type').addEventListener('change', function() {
+document.getElementById('ads_types').addEventListener('change', function() {
 
 // console.log('You selected: ', this.value);
 
