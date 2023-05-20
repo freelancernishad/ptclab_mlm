@@ -8,7 +8,7 @@
 
     <div class="form-group col-md-12">
         <label class="form-label">@lang('Prove Files')</label>
-        <select class="select2-multi-select form-control" name="filesSupports[]" multiple>
+        <select class="select2-multi-select form-control" name="filesSupports[]" multiple required>
             <option value="jpg">JPG</option>
             <option value="jpeg">JPEG</option>
             <option value="png">PNG</option>
