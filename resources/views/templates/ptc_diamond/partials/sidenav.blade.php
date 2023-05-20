@@ -130,7 +130,7 @@
                                         <i class="las la-mouse"></i>
                                     </span>
                                     <span class="accordion-button__text">
-                                        @lang('PTC')
+                                        @lang('Ads board')
                                     </span>
                                 </button>
                             </h2>

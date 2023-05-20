@@ -48,15 +48,25 @@
 
                     <div class="row pt-5 mt-5 border-top">
                     <input type="hidden" name="ads_type" id="Getads_types" >
+
+
+
+                    <div class="form-group col-md-4">
+                        <label for="ads_package">@lang('Ads Package')</label>
+                        <select class="form-control" id="ads_package" onchange="adsPackage(this.value)" required>
+                            <option value="">Select</option>
+                            <option value="iframe">Iframe</option>
+                            <option value="Task ads">Task ads</option>
+                        </select>
+                    </div>
+
+
+
+
                     <div class="form-group col-md-4">
                         <label for="ads_type">@lang('Advertisement Type')</label>
                         <select class="form-control" id="ads_type" name="ads_types"    required>
                             <option value="">Select</option>
-                            @foreach ($ads_settings as $ads_setting)
-                            <option value="{{ $ads_setting->id }}" {{ old('ads_types')==$ads_setting->id?'selected':'' }}>{{ $ads_setting->adsName }}</option>
-                            @endforeach
-
-
                         </select>
                         <pre class="text--danger">@lang('Price per ad') <span class="price-per-ad"></span> {{ $general->cur_text }}</pre>
                     </div>
@@ -97,7 +107,17 @@
 <script src="https://cdn.tiny.cloud/1/nhnny39zzu3w0euy077ojdf9gk1n3mjpkobk25i228rt3qkz/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>script>
 <script>
 
-
+    var ads_settings = <?php echo json_encode($ads_settings); ?>;
+        function adsPackage(params){
+        var filteredArray = ads_settings.filter((element)=> {
+            return element.IfOr ==params;
+        });
+            var optionhtml = `<option value="">Select</option>`;
+            filteredArray.forEach(el => {
+                 optionhtml +=`<option value="${ el.id }">${ el.adsName }</option>`;
+            });
+            document.getElementById('ads_type').innerHTML=optionhtml
+        }
 
 
 
