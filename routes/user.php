@@ -136,6 +136,7 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::post('update/{id}', 'update')->name('update');
                 Route::get('status/{id}', 'status')->name('status');
                 Route::get('clicks', 'clicks')->name('clicks');
+                Route::get('history', 'history')->name('history');
             });
         });
 

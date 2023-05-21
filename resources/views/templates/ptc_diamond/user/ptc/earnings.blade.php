@@ -7,7 +7,7 @@
               <th scope="col">@lang('Date')</th>
               <th scope="col">@lang('Total Click')</th>
               <th scope="col">@lang('Total Earn')</th>
-              {{-- <th scope="col">@lang('Status')</th> --}}
+
           </tr>
       </thead>
         <tbody>
@@ -18,15 +18,7 @@
                 <td>
                     {{ showAmount($view->total_earned) }} {{ $general->cur_text }}
                 </td>
-                {{-- <td>
-                    @if ($view->status=='pending')
-                    <span class="btn btn-warning">Pending</span>
-                    @elseif ($view->status=='Rejected')
-                        <span class="btn btn-danger">Rejected</span>
-                    @else
-                        <span class="btn btn-success">Completed</span>
-                    @endif
-                </td> --}}
+
             </tr>
           @empty
               <tr>

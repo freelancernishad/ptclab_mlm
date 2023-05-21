@@ -92,6 +92,13 @@ class PtcController extends Controller
         return view($this->activeTemplate . 'user.ptc.earnings', compact('viewads', 'pageTitle'));
     }
 
+    public function history()
+    {
+        $pageTitle = 'PTC Status';
+         $viewads   = PtcView::where('user_id', auth()->user()->id)->orderBy('view_date', 'desc')->paginate(getPaginate());
+        return view($this->activeTemplate . 'user.ptc.history', compact('viewads', 'pageTitle'));
+    }
+
     public function confirm(Request $request, $hash)
     {
 

@@ -153,12 +153,22 @@
                                             </a>
                                         </li>
                                         @endif
+
                                         <li>
                                             <a href="{{ route('user.ptc.clicks') }}"
                                                 class="dashboard-menu__inner-link {{ request()->routeIs('user.ptc.clicks') ? 'active' : '' }}">
                                                 @lang('Clicks')
                                             </a>
                                         </li>
+
+                                        <li>
+                                            <a href="{{ route('user.ptc.history') }}"
+                                                class="dashboard-menu__inner-link {{ request()->routeIs('user.ptc.history') ? 'active' : '' }}">
+                                                @lang('Task status')
+                                            </a>
+                                        </li>
+
+
                                     </ul>
                                 </div>
                             </div>
