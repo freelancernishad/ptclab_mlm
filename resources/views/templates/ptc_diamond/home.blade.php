@@ -26,7 +26,21 @@
                     </div>
                 </div>
                 <div class="col-lg-5 col-xl-6 col-xxl-7">
-                    <img src="{{ getImage('assets/images/frontend/banner/'.$banner->data_values->image, '1080x800') }}" alt="image" class="img-fluid">
+
+                    @php
+                    $path =  getImage('assets/images/frontend/banner/'.$banner->data_values->image, '1080x800');
+                    $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+                    @endphp
+
+                    @if($ext=='mp4')
+                    <video id="myVideo" src="{{ getImage('assets/images/frontend/banner/' . $banner->data_values->image, '1382x1445') }}" class="img-fluid" playsinline autoplay loop muted></video>
+                    @else
+                    <img src="{{ getImage('assets/images/frontend/banner/' . $banner->data_values->image, '1382x1445') }}" alt="images" class="img-fluid" />
+                    @endif
+
+
+                    {{-- <img src="{{ getImage('assets/images/frontend/banner/'.$banner->data_values->image, '1080x800') }}" alt="image" class="img-fluid"> --}}
                 </div>
             </div>
         </div>
@@ -39,5 +53,5 @@
             @include($activeTemplate.'sections.'.$sec)
         @endforeach
     @endif
-    
+
 @endsection
